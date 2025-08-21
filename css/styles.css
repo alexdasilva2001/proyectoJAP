@@ -188,3 +188,27 @@ a.custom-card:hover {
 .checked {
   color: orange;
 }
+
+.link-login {
+  width: 150px;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background 0.3s;
+  align-self: flex-end;
+}
+
+.link-register {
+  width: 150px;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background 0.3s;
+  align-self: flex-end;
+}
