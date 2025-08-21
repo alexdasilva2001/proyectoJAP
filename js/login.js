@@ -1,9 +1,12 @@
-function login(){
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
-    if (username === "" || password === "") {
-        alert("Completa ambos campos.");
-        return;
+function login() {
+    const username = document.getElementById('usuario').value.trim();
+    const password = document.getElementById('contraseña').value.trim();
+
+    if (username === '' || password === '') {
+        alert('Completar todos los campos');
+        return false; // Campos vacíos
     }
-    alert("Bienvenido, " + username + "!");
+
+    alert('Login exitoso');
+    return true;
 }
