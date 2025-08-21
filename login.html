@@ -15,31 +15,48 @@
       <div id="foto-perfil">
         <img src="img/Generic avatar.png" alt="Imagen de perfil" />
       </div>
-      <form action="index.html" method="get" class="login-form" onsubmit= "return login()">
-  <input
-    type="text"
-    id="usuario"
-    name="usuario"
-    placeholder="Usuario"
-    required
-  />
-  <input
-    type="password"
-    id="contraseña"
-    name="contraseña"
-    placeholder="Contraseña"
-    required
-  />
 
-  <div class="recordar">
-    <label class="switch">
-      <input type="checkbox" />
-      <span class="slider"></span>
-    </label>
-    <span>Recordar Contraseña</span>
-  </div>
+      <form
+        action="index.html"
+        method="get"
+        class="login-form"
+        onsubmit="return login(event)"
+      >
+        <input
+          type="text"
+          id="usuario"
+          name="usuario"
+          placeholder="Usuario"
+          required
+        />
+        <input
+          type="password"
+          id="contraseña"
+          name="contraseña"
+          placeholder="Contraseña"
+          required
+        />
 
-  <button type="submit" class="btn-login">
-    Ingresar <i class="bi bi-box-arrow-in-right"></i>
-  </button>
-</form>
+        <div class="recordar">
+          <label class="switch">
+            <input type="checkbox" />
+            <span class="slider"></span>
+          </label>
+          <span>Recordar Contraseña</span>
+        </div>
+
+        <button type="submit" class="btn-login">
+          Ingresar <i class="bi bi-box-arrow-in-right"></i>
+        </button>
+      </form>
+
+      <div class="btn-sign-in">
+        <span class="texto-registro">¿No estás registrado?</span>
+        <button type="button">
+          Regístrate <i class="bi bi-box-arrow-in-left"></i>
+        </button>
+      </div>
+    </div>
+    <script src="js/script.js"></script>
+  </body>
+</html>
