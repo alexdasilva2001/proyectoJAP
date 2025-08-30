@@ -14,10 +14,9 @@ form.addEventListener("submit", function (event) {
     localStorage.setItem("usuario", usuario);
   }
 });
+/*Usuario en barra*/
 document.addEventListener("DOMContentLoaded", () => {
   const usuarioGuardado = localStorage.getItem("usuario");
-  if (usuarioGuardado) {
-    document.getElementById("usuariobarra").innerHTML = usuarioGuardado;
-    document.getElementById("usuarioguardado").innerHTML = usuarioGuardado;
-  }
+  if (usuarioGuardado)
+    document.getElementById("usuarioGuardado").innerText = usuarioGuardado;
 });
