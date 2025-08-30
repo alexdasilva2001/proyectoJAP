@@ -40,7 +40,7 @@ body {
   font-weight: bold;
 }
 
-/* --- Smartphone Pequeño: 320 x 568 px --- */
+/* --- 320 x 568 px --- */
 @media screen and (max-width: 480px) {
   .product-container {
     flex-direction: column;
@@ -61,7 +61,7 @@ body {
   }
 }
 
-/* --- Tablet Vertical: 768 x 1024 px --- */
+/* --- 768 x 1024 px --- */
 @media screen and (min-width: 481px) and (max-width: 1024px) {
   .product-container {
     gap: 1.5rem;
@@ -80,7 +80,7 @@ body {
   }
 }
 
-/* --- Resolución Estándar: 1366 x 768 px --- */
+/* --- 1366 x 768 px --- */
 @media screen and (min-width: 1025px) {
   .product-container {
     gap: 2rem;

@@ -249,3 +249,39 @@ body {
     font-size: 12px;
   }
 }
+
+/* ====== Resolución Estándar (1366 x 768) ====== */
+@media (min-width: 1025px) and (max-width: 1400px) {
+  .login-container {
+    height: auto;
+    padding: 32px;
+    max-width: 400px;
+    margin: auto;
+  }
+
+  #foto-perfil img {
+    width: 160px;
+    height: 160px;
+  }
+
+  .login-form input {
+    width: 280px;
+    font-size: 14px;
+  }
+
+  .btn-login {
+    width: 150px;
+    font-size: 16px;
+    margin-right: 0;
+  }
+
+  .btn-sign-in button {
+    width: 150px;
+    font-size: 16px;
+    padding: 12px 20px;
+  }
+
+  .texto-registro {
+    font-size: 14px;
+  }
+}
