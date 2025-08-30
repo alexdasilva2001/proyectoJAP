@@ -10,3 +10,5 @@ function login() {
     alert('Login exitoso');
     return true;
 }
+
+document.getElementById('usuariobarra').innerText = username;
