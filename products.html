@@ -10,6 +10,22 @@
   </head>
 
   <body>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid d-flex align-items-center">
+          <a class="navbar-brand">Autos</a>
+          <select id="sortOptions" class="form-select w-auto">
+            <option value="default">Predeterminado</option>
+            <option value="priceAsc">Precio: Bajo a Alto</option>
+            <option value="priceDesc">Precio: Alto a Bajo</option>
+            <option value="soldCountDesc">Más Vendidos</option>
+            <option value="soldCountAsc">Menos Vendidos</option>
+          </select>
+          </div> 
+          <input type="text" id="preciominimo" placeholder="Precio minimo">
+          <input type="text" id="preciomaximo" placeholder="Precio maximo">
+      </nav>
+    </header>
     <main>
       <div class="product-container" id="productList">
         <!-- Productos se insertan aquí -->
