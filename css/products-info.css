@@ -1,0 +1,225 @@
+:root {
+  font-size: 20px;
+
+  --color-bg: #4b0082;
+  --color-surface: #f8f9fa;
+  --color-muted: #6c757d;
+  --color-text: #000;
+  --color-placeholder: #d3d3d3;
+  --color-placeholder-text: #555;
+  --brand: #14ae5c;
+  --brand-dark: #108d4a;
+  --shadow-brand: rgba(20, 174, 92, 0.25);
+
+  --radius-md: 0.75rem;
+  --radius-round: 50%;
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-surface);
+  font-family: Arial, sans-serif;
+}
+
+.product-card {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+
+  width: 100%;
+  max-width: min(96vw, 96rem);
+  margin: var(--space-2) auto;
+}
+
+.product-image {
+  background-color: var(--color-placeholder);
+  width: 100%;
+  height: clamp(20rem, 45vw, 36rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  font-size: 1.25rem;
+  color: var(--color-placeholder-text);
+}
+
+.old-price {
+  position: relative;
+  top: 20.5rem;
+  text-decoration: line-through;
+  color: var(--color-muted);
+  font-size: 1.125rem;
+  margin-bottom: 0.25rem;
+}
+
+.current-price {
+  font-size: 2rem;
+  position: relative;
+  top: 20rem;
+  font-weight: bold;
+  color: var(--color-text);
+  margin-top: 0;
+  margin-bottom: var(--space-2);
+}
+
+.btn-buy {
+  position: relative;
+  top: 18rem;
+  background-color: var(--brand);
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: bold;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 0.75rem 4rem;
+  transition: background-color 0.25s ease, transform 0.1s ease;
+  box-shadow: 0 0.25rem 0.625rem var(--shadow-brand);
+  cursor: pointer;
+}
+
+.btn-buy:hover {
+  background-color: var(--brand-dark);
+  transform: translateY(-1px);
+}
+
+.btn.btn-icon {
+  position: relative;
+  top: 18rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-size: 1.6rem;
+  border-radius: var(--radius-round);
+  border: 0.125rem solid var(--brand);
+  color: var(--brand);
+  background-color: transparent;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.1s ease;
+  cursor: pointer;
+}
+
+.btn.btn-icon:hover {
+  background-color: var(--brand);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.btn-buy:focus-visible,
+.btn.btn-icon:focus-visible {
+  outline: 0.1875rem solid rgba(20, 174, 92, 0.5);
+  outline-offset: 0.125rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-buy,
+  .btn.btn-icon {
+    transition: none;
+  }
+  .btn-buy:hover,
+  .btn.btn-icon:hover {
+    transform: none;
+  }
+}
+
+@media (max-width: 36rem) {
+  .product-card {
+    padding: 1.25rem;
+  }
+
+  .product-image {
+    height: 15rem;
+  }
+
+  .current-price {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .btn-buy {
+    font-size: 1rem;
+    padding: 0.625rem 1.25rem;
+  }
+
+  .btn.btn-icon {
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.4rem;
+  }
+}
+
+.product-card .row {
+  align-items: stretch;
+}
+
+.product-card .col-md-6:last-child {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto auto auto auto 1fr auto;
+  grid-template-areas:
+    "category"
+    "name"
+    "oldprice"
+    "currentprice"
+    "actions"
+    "description"
+    "sold";
+  min-height: 100%;
+}
+
+#product-category {
+  position: relative;
+  top: 1rem;
+  grid-area: category;
+  margin-bottom: 0.25rem;
+}
+#product-name {
+  position: relative;
+  top: 1.5rem;
+  grid-area: name;
+  margin-bottom: 0.5rem;
+}
+#product-old-price {
+  grid-area: oldprice;
+  margin-top: 0;
+  margin-bottom: 0.25rem;
+}
+#product-current-price {
+  grid-area: currentprice;
+  margin-top: 0;
+  margin-bottom: var(--space-2);
+}
+
+.product-card .col-md-6:last-child > .d-flex.gap-4.my-4 {
+  grid-area: actions;
+  justify-self: start;
+  margin-top: 3.5rem;
+  margin-bottom: var(--space-2);
+}
+
+#product-description {
+  grid-area: description;
+  margin-top: var(--space-4);
+  position: relative;
+  bottom: 12rem;
+}
+
+#product-sold-count {
+  grid-area: sold;
+  align-self: end;
+}
