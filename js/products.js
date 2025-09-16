@@ -102,7 +102,7 @@ sortOptions.addEventListener("change", aplicarOrden);
 filterButton.addEventListener("click", aplicarFiltrosPrecio);
 
 // Cargar productos desde la API
-fetch(URL_AUTOS)
+fetch(URL)
   .then(response => response.json())
   .then(data => {
     productos = data.products;
