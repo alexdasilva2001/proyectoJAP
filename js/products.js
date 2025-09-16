@@ -31,11 +31,6 @@ document.addEventListener("DOMContentLoaded", function () {
       productList.innerHTML = `<p>Error al cargar productos: ${error}</p>`;
     });
 
-  })
-  .catch(error => {
-    productList.innerHTML = `<p>Error al cargar productos: ${error}</p>`;
-  });
-
 const sortOptions = document.getElementById("sortOptions"); 
 const filterButton = document.getElementById("filterButton");
 const minInput = document.getElementById("preciominimo");
