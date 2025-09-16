@@ -117,5 +117,3 @@ fetch(URL_AUTOS)
   .catch(error => {
     productList.innerHTML = `<p>Error al cargar productos: ${error}</p>`;
   });
-=======
-});
