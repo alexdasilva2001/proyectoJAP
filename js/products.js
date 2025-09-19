@@ -1,10 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
   const catID = localStorage.getItem("catID");
-  const nombreCategoria = localStorage.getItem("catName") || "productos"; // Nombre de categoría
+  const nombreCategoria = localStorage.getItem("catName") || "Productos"; 
+  const navbarTitle = document.getElementById("navbarTitle");
 
-console.log("products.js cargado correctamente");
 
-document.addEventListener("DOMContentLoaded", function () {
+  console.log("products.js cargado correctamente");
+
   const productList = document.getElementById("productList");
   const sortOptions = document.getElementById("sortOptions");
   const filterButton = document.getElementById("filterButton");
@@ -23,6 +24,27 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   const URL = `https://japceibal.github.io/emercado-api/cats_products/${catID}.json`;
+
+  if (!catID) {
+    if (navbarTitle) navbarTitle.textContent = "Categoría desconocida";
+    return;
+  }
+
+  // 🚀 Obtener lista de categorías para buscar el nombre
+  fetch("https://japceibal.github.io/emercado-api/cats/cat.json")
+    .then(response => response.json())
+    .then(categorias => {
+      const categoria = categorias.find(c => c.id == catID);
+      if (categoria && navbarTitle) {
+        navbarTitle.textContent = categoria.name; // 👈 Mostramos el nombre real
+      } else if (navbarTitle) {
+        navbarTitle.textContent = "Categoría desconocida";
+      }
+    })
+    .catch(error => {
+      console.error("Error cargando categorías:", error);
+      if (navbarTitle) navbarTitle.textContent = "Error al cargar";
+    });
 
   function renderProducts(lista) {
     productList.innerHTML = "";
@@ -85,6 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
       p.description.toLowerCase().includes(texto)
     );
     renderProducts(listaFiltrada);
+  }
 
   sortOptions.addEventListener("change", aplicarOrden);
   filterButton.addEventListener("click", aplicarFiltrosPrecio);
