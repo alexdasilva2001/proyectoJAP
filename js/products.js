@@ -31,3 +31,6 @@ document.addEventListener("DOMContentLoaded", function () {
       productList.innerHTML = `<p>Error al cargar productos: ${error}</p>`;
     });
 });
+function setProductsId(id) {
+    localStorage.setItem("PRODUCT_INFO_URL", id);
+    window.location = "product-info.html"
