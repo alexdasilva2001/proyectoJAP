@@ -1,10 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
   const catID = localStorage.getItem("catID");
-  const nombreCategoria = localStorage.getItem("catName") || "productos"; // Nombre de categoría
+  const nombreCategoria = localStorage.getItem("catName") || "productos"; 
 
-console.log("products.js cargado correctamente");
+  console.log("products.js cargado correctamente");
 
-document.addEventListener("DOMContentLoaded", function () {
   const productList = document.getElementById("productList");
   const sortOptions = document.getElementById("sortOptions");
   const filterButton = document.getElementById("filterButton");
@@ -85,6 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
       p.description.toLowerCase().includes(texto)
     );
     renderProducts(listaFiltrada);
+  }
 
   sortOptions.addEventListener("change", aplicarOrden);
   filterButton.addEventListener("click", aplicarFiltrosPrecio);
@@ -100,4 +100,4 @@ document.addEventListener("DOMContentLoaded", function () {
     .catch(error => {
       productList.innerHTML = `<p>Error al cargar productos: ${error}</p>`;
     });
-  };
+});
