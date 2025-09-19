@@ -1,12 +1,18 @@
+document.addEventListener("DOMContentLoaded", function () {
+  const catID = localStorage.getItem("catID");
+  const nombreCategoria = localStorage.getItem("catName") || "productos"; // Nombre de categoría
+
 console.log("products.js cargado correctamente");
 
 document.addEventListener("DOMContentLoaded", function () {
-  const catID = localStorage.getItem("catID");
   const productList = document.getElementById("productList");
   const sortOptions = document.getElementById("sortOptions");
   const filterButton = document.getElementById("filterButton");
   const minInput = document.getElementById("preciominimo");
   const maxInput = document.getElementById("preciomaximo");
+  const buscador = document.getElementById("buscador");
+
+  buscador.placeholder = `Buscar ${nombreCategoria}...`;
 
   let productos = [];
   let productosFiltrados = [];
@@ -72,8 +78,17 @@ document.addEventListener("DOMContentLoaded", function () {
     renderProducts(listaOrdenada);
   }
 
+  function aplicarBusqueda() {
+    const texto = buscador.value.toLowerCase();
+    const listaFiltrada = productosFiltrados.filter(p =>
+      p.name.toLowerCase().includes(texto) ||
+      p.description.toLowerCase().includes(texto)
+    );
+    renderProducts(listaFiltrada);
+
   sortOptions.addEventListener("change", aplicarOrden);
   filterButton.addEventListener("click", aplicarFiltrosPrecio);
+  buscador.addEventListener("input", aplicarBusqueda);
 
   fetch(URL)
     .then(response => response.json())
