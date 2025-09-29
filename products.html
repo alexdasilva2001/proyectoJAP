@@ -13,7 +13,7 @@
     <header>
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid d-flex align-items-center">
-          <a class="navbar-brand">Autos</a>
+          <a class="navbar-brand" id="navbarTitle"></a>
           <select id="sortOptions" class="form-select w-auto">
             <option value="default">Predeterminado</option>
             <option value="priceAsc">Precio: Bajo a Alto</option>
@@ -24,10 +24,14 @@
           </div> 
           <input type="text" id="preciominimo" placeholder="Precio minimo">
           <input type="text" id="preciomaximo" placeholder="Precio maximo">
+          <button id="filterButton" class="btn btn-outline-dark">Filtrar</button>
+          <div class="mx-auto">
+            <input type="search" id="buscador" class="form-control" placeholder="Buscar...">
+          </div>
       </nav>
     </header>
     <main>
-      <div class="product-container" id="productList">
+      <div class="product-container" id="productList" href="product-info.html">
         <!-- Productos se insertan aquí -->
       </div>
     </main>
