@@ -231,3 +231,12 @@ body {
   grid-area: sold;
   align-self: end;
 }
+
+#product-stars {
+  position: relative;
+  top: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: var(--space-2);
+}
