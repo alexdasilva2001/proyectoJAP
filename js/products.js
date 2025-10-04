@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
-  // 🚀 Obtener lista de categorías para buscar el nombre
+  //  Obtener lista de categorías para buscar el nombre
   fetch("https://japceibal.github.io/emercado-api/cats/cat.json")
     .then(response => response.json())
     .then(categorias => {
