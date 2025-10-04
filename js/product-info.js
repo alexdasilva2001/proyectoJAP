@@ -24,3 +24,111 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error(error);
     });
 });
+
+// Variable global para guardar la puntuación seleccionada
+let rating = 0;
+
+// Seleccionar las estrellas
+const stars = document.querySelectorAll('.star-icon');
+
+// Hacer interactivas las estrellas
+stars.forEach((star, index) => {
+  star.addEventListener('mouseover', () => {
+    resetStars();
+    for (let i = 0; i <= index; i++) {
+      stars[i].classList.add('active');
+    }
+  });
+
+  star.addEventListener('mouseout', () => {
+    resetStars();
+    for (let i = 0; i < rating; i++) {
+      stars[i].classList.add('active');
+    }
+  });
+
+  star.addEventListener('click', () => {
+    rating = index + 1; // Guardar puntuación seleccionada
+    console.log("Puntuación seleccionada:", rating);
+  });
+});
+
+function resetStars() {
+  stars.forEach(star => star.classList.remove('active'));
+}
+
+// Mostrar comentarios cargados desde la API
+function mostrarComentarios(lista) {
+  const commentsList = document.getElementById("comments-list");
+  commentsList.innerHTML = ""; // limpiar antes de mostrar
+
+  lista.forEach(comentario => {
+    agregarComentario(comentario);
+  });
+}
+
+// Agregar un comentario al DOM
+function agregarComentario(comentario) {
+  const commentsList = document.getElementById("comments-list");
+
+  const div = document.createElement("div");
+  div.classList.add("comentario", "mb-3", "p-2", "border", "rounded");
+
+  // Pintar estrellas según el score
+  let estrellasHTML = "";
+  for (let i = 1; i <= 5; i++) {
+    if (i <= comentario.score) {
+      estrellasHTML += `<i class="fa fa-star text-warning"></i>`;
+    } else {
+      estrellasHTML += `<i class="fa fa-star text-secondary"></i>`;
+    }
+  }
+
+  div.innerHTML = `
+    <div class="d-flex justify-content-between align-items-center">
+      <strong>${comentario.user}</strong>
+      <small class="text-muted">${comentario.dateTime}</small>
+    </div>
+    <div>${estrellasHTML}</div>
+    <p class="mt-2 mb-0">${comentario.description}</p>
+  `;
+
+  commentsList.prepend(div);
+}
+
+// Cargar comentarios desde la API
+fetch(COMMENTS_URL)
+  .then(response => response.json())
+  .then(data => {
+    mostrarComentarios(data);
+  });
+
+// Evento para enviar un nuevo comentario
+const form = document.getElementById("comment-form");
+if (form) {
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const texto = document.getElementById("comment-input").value; // 👈 textarea correcto
+    const fecha = new Date().toLocaleString();
+    const usuario = "Usuario";
+
+    if (texto.trim() === "" || rating === 0) return; // no dejar enviar vacío ni sin estrellas
+
+    // Crear un objeto nuevo comentario
+    const nuevoComentario = {
+      user: usuario,
+      description: texto,
+      score: rating,
+      dateTime: fecha
+    };
+
+    // Agregarlo visualmente
+    agregarComentario(nuevoComentario);
+
+    // Limpiar formulario y resetear estrellas
+    form.reset();
+    rating = 0;
+    resetStars();
+  });
+}

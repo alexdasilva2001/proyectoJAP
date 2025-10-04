@@ -64,7 +64,6 @@ body {
   margin-top: -13rem;
 }
 
-
 .old-price {
   position: relative;
   top: 20.5rem;
@@ -135,10 +134,12 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .btn-buy,
   .btn.btn-icon {
     transition: none;
   }
+
   .btn-buy:hover,
   .btn.btn-icon:hover {
     transform: none;
@@ -196,24 +197,27 @@ body {
   grid-area: category;
   margin-bottom: 0.25rem;
 }
+
 #product-name {
   position: relative;
   top: 1.5rem;
   grid-area: name;
   margin-bottom: 0.5rem;
 }
+
 #product-old-price {
   grid-area: oldprice;
   margin-top: 0;
   margin-bottom: 0.25rem;
 }
+
 #product-current-price {
   grid-area: currentprice;
   margin-top: 0;
   margin-bottom: var(--space-2);
 }
 
-.product-card .col-md-6:last-child > .d-flex.gap-4.my-4 {
+.product-card .col-md-6:last-child>.d-flex.gap-4.my-4 {
   grid-area: actions;
   justify-self: start;
   margin-top: 3.5rem;
@@ -232,11 +236,15 @@ body {
   align-self: end;
 }
 
-#product-stars {
-  position: relative;
-  top: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  margin-bottom: var(--space-2);
+.star-icon {
+  font-size: 24px;
+  cursor: pointer;
+  color: #000000;
+  /* color apagado */
+  transition: color 0.2s;
+}
+
+.star-icon.active {
+  color: gold;
+  /* color encendido */
 }
