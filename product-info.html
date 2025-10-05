@@ -18,18 +18,18 @@
     <link rel="stylesheet" href="css/products-info.css" />
   </head>
   <body>
-
-    
     <div class="container py-5">
       <div class="row justify-content-center">
         <div class="col-lg-10 col-xl-9 product-card">
           <div class="row g-4">
+            <!-- Columna de imagen -->
             <div class="col-md-6">
               <div class="product-image">
                 <img id="product-image" src="" alt="Imagen del producto" />
               </div>
             </div>
 
+            <!-- Columna de información -->
             <div class="col-md-6">
               <h6 id="product-category" class="text-muted">Categoría</h6>
               <h2 id="product-name" class="fw-bold">Nombre del Producto</h2>
@@ -46,36 +46,45 @@
                   <i class="fa fa-cart-plus"></i>
                 </button>
               </div>
-          
-              <p id="product-sold-count" class="text-muted"></p>
-
-
-                
-              </div>  
-               <h4>Dejá tu calificación:</h4>
-      <form id="comment-form">
-        <div id="products-stars" class="d-flex align-items-center gap-2">
-          <i class="fa fa-star star-icon"></i>
-          <i class="fa fa-star star-icon"></i>
-          <i class="fa fa-star star-icon"></i>
-          <i class="fa fa-star star-icon"></i>
-          <i class="fa fa-star star-icon"></i>
-          <textarea id="comment-input" class="form-control" rows="1" placeholder="Escribe tu comentario aquí..."></textarea>
-          <button type="submit" id="submit-comment" class="btn">Enviar</button>
-        </div>
-      </form>   
-
               
+              <p id="product-sold-count" class="text-muted"></p>
+            </div>
+          </div>
+
+          <!-- Sección de comentarios -->
+          <div class="row mt-5">
+            <div class="col-12">
+              <h4>Dejá tu calificación:</h4>
+              <form id="comment-form" class="mb-4">
+                <div id="products-stars" class="d-flex align-items-center gap-2">
+                  <i class="fa fa-star star-icon"></i>
+                  <i class="fa fa-star star-icon"></i>
+                  <i class="fa fa-star star-icon"></i>
+                  <i class="fa fa-star star-icon"></i>
+                  <i class="fa fa-star star-icon"></i>
+                  <textarea id="comment-input" class="form-control" rows="1" placeholder="Escribe tu comentario aquí..."></textarea>
+                  <button type="submit" id="submit-comment" class="btn btn-primary">Enviar</button>
+                </div>
+              </form>
+
+              <div class="comments-section">
+                <h4>Comentarios</h4>
+                <div id="comments-list" class="comments-container">
+                  <!-- Aquí se cargarán dinámicamente los comentarios -->
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <script src="js/product-info.js"></script>
+
+    <!-- Productos relacionados -->
     <div class="container py-5">
-  <h3 class="mb-4">Quizás te interese...</h3>
-  <div id="related-products" class="row g-4"></div>
-</div>
+      <h3 class="mb-4">Quizás te interese...</h3>
+      <div id="related-products" class="row g-4"></div>
+    </div>
+
+    <script src="js/product-info.js"></script>
   </body>
 </html>

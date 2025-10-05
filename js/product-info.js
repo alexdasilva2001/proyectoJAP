@@ -48,6 +48,25 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+// Obtener el ID del producto que está en localStorage
+const productID = localStorage.getItem("productID");
+
+// Constante para la URL de comentarios
+const COMMENTS_URL = `https://japceibal.github.io/emercado-api/products_comments/${productID}.json`;
+
+// Función para obtener comentarios guardados del localStorage
+function getStoredComments() {
+  const storedComments = localStorage.getItem(`comments_${productID}`);
+  return storedComments ? JSON.parse(storedComments) : [];
+}
+
+// Función para guardar comentarios en localStorage
+function saveComment(comment) {
+  const storedComments = getStoredComments();
+  storedComments.push(comment);
+  localStorage.setItem(`comments_${productID}`, JSON.stringify(storedComments));
+}
+
 // Variable global para guardar la puntuación seleccionada
 let rating = 0;
 
@@ -80,81 +99,91 @@ function resetStars() {
   stars.forEach(star => star.classList.remove('active'));
 }
 
-// Mostrar comentarios cargados desde la API
-function mostrarComentarios(lista) {
+// Función para mostrar comentarios
+function mostrarComentarios(listaAPI) {
   const commentsList = document.getElementById("comments-list");
-  commentsList.innerHTML = ""; // limpiar antes de mostrar
+  commentsList.innerHTML = ""; // Limpiar contenedor
 
-  lista.forEach(comentario => {
-    agregarComentario(comentario);
+  // Obtener comentarios guardados
+  const comentariosGuardados = getStoredComments();
+  
+  // Combinar comentarios de API y localStorage
+  const todosLosComentarios = [...listaAPI, ...comentariosGuardados];
+  
+  // Ordenar por fecha más reciente
+  todosLosComentarios.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime));
+
+  todosLosComentarios.forEach(comentario => {
+    const div = document.createElement("div");
+    div.classList.add("comentario", "mb-3");
+
+    let estrellas = "";
+    for (let i = 1; i <= 5; i++) {
+      if (i <= comentario.score) {
+        estrellas += '<i class="fa fa-star text-warning"></i>';
+      } else {
+        estrellas += '<i class="fa fa-star text-secondary"></i>';
+      }
+    }
+
+    div.innerHTML = `
+      <div class="d-flex justify-content-between align-items-center">
+        <strong>${comentario.user}</strong>
+        <small class="text-muted">${comentario.dateTime}</small>
+      </div>
+      <div class="my-1">${estrellas}</div>
+      <p class="mb-0">${comentario.description}</p>
+    `;
+
+    commentsList.appendChild(div);
   });
 }
 
-// Agregar un comentario al DOM
-function agregarComentario(comentario) {
-  const commentsList = document.getElementById("comments-list");
-
-  const div = document.createElement("div");
-  div.classList.add("comentario", "mb-3", "p-2", "border", "rounded");
-
-  // Pintar estrellas según el score
-  let estrellasHTML = "";
-  for (let i = 1; i <= 5; i++) {
-    if (i <= comentario.score) {
-      estrellasHTML += `<i class="fa fa-star text-warning"></i>`;
-    } else {
-      estrellasHTML += `<i class="fa fa-star text-secondary"></i>`;
-    }
-  }
-
-  div.innerHTML = `
-    <div class="d-flex justify-content-between align-items-center">
-      <strong>${comentario.user}</strong>
-      <small class="text-muted">${comentario.dateTime}</small>
-    </div>
-    <div>${estrellasHTML}</div>
-    <p class="mt-2 mb-0">${comentario.description}</p>
-  `;
-
-  commentsList.prepend(div);
-}
-
-// Cargar comentarios desde la API
+// Cargar comentarios de la API
 fetch(COMMENTS_URL)
   .then(response => response.json())
   .then(data => {
     mostrarComentarios(data);
+  })
+  .catch(error => {
+    console.error("Error al cargar comentarios:", error);
+    mostrarComentarios([]); // Mostrar al menos los comentarios locales si falla la API
   });
 
-// Evento para enviar un nuevo comentario
+// Manejar el envío de nuevos comentarios
 const form = document.getElementById("comment-form");
 if (form) {
-  form.addEventListener("submit", function (e) {
+  form.addEventListener("submit", function(e) {
     e.preventDefault();
+    
+    const texto = document.getElementById("comment-input").value;
+    const usuario = localStorage.getItem("user") || "Anónimo";
+    
+    if (texto.trim() === "" || rating === 0) return;
 
-    const texto = document.getElementById("comment-input").value; // 👈 textarea correcto
-    const fecha = new Date().toLocaleString();
-    const usuario = "Usuario";
-
-    if (texto.trim() === "" || rating === 0) return; // no dejar enviar vacío ni sin estrellas
-
-    // Crear un objeto nuevo comentario
     const nuevoComentario = {
       user: usuario,
       description: texto,
       score: rating,
-      dateTime: fecha
+      dateTime: new Date().toLocaleString()
     };
 
-    // Agregarlo visualmente
-    agregarComentario(nuevoComentario);
+    saveComment(nuevoComentario);
+    
+    // Recargar todos los comentarios
+    fetch(COMMENTS_URL)
+      .then(response => response.json())
+      .then(data => {
+        mostrarComentarios(data);
+      });
 
-    // Limpiar formulario y resetear estrellas
+    // Limpiar formulario
     form.reset();
     rating = 0;
     resetStars();
   });
 }
+
 // Mostrar productos relacionados
 function mostrarRelacionados(productos) {
   const contenedor = document.getElementById("related-products");
