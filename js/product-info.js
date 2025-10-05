@@ -157,12 +157,16 @@ if (form) {
     e.preventDefault();
     
     const texto = document.getElementById("comment-input").value;
-    const usuario = localStorage.getItem("user") || "Anónimo";
+    // Obtener el email del usuario desde sessionStorage o usar "Anónimo"
+    const userEmail = sessionStorage.getItem("user") || "Anónimo";
     
-    if (texto.trim() === "" || rating === 0) return;
+    if (texto.trim() === "" || rating === 0) {
+      showAlert('Debes escribir un comentario y dar una calificación', 'warning');
+      return;
+    }
 
     const nuevoComentario = {
-      user: usuario,
+      user: userEmail,
       description: texto,
       score: rating,
       dateTime: new Date().toLocaleString()
@@ -175,6 +179,7 @@ if (form) {
       .then(response => response.json())
       .then(data => {
         mostrarComentarios(data);
+        showAlert('¡Comentario publicado exitosamente!', 'success');
       });
 
     // Limpiar formulario
@@ -182,6 +187,27 @@ if (form) {
     rating = 0;
     resetStars();
   });
+}
+
+// Función para mostrar alertas de Bootstrap
+function showAlert(message, type) {
+  const alertPlaceholder = document.getElementById('comments-list');
+  const wrapper = document.createElement('div');
+  
+  wrapper.innerHTML = `
+    <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+      ${message}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  `;
+  
+  // Insertar la alerta al principio del contenedor de comentarios
+  alertPlaceholder.insertBefore(wrapper, alertPlaceholder.firstChild);
+  
+  // Eliminar la alerta después de 3 segundos
+  setTimeout(() => {
+    wrapper.firstElementChild.remove();
+  }, 3000);
 }
 
 // Mostrar productos relacionados
