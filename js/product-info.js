@@ -212,24 +212,35 @@ function showAlert(message, type) {
 
 // Mostrar productos relacionados
 function mostrarRelacionados(productos) {
-  const contenedor = document.getElementById("related-products");
-  contenedor.innerHTML = "";
+  const container = document.getElementById("related-products");
+  container.innerHTML = ''; // Limpiar el contenedor
 
-  productos.slice(0, 3).forEach(producto => {
-    const html = `
-      <div class="col-md-4">
-        <div class="card h-100">
-          <img src="${producto.image}" class="card-img-top" alt="${producto.name}">
-          <div class="card-body">
-            <h5 class="card-title">${producto.name}</h5>
-            <p class="card-text">${producto.currency} ${producto.cost}</p>
-            <button class="btn btn-outline-primary" onclick="verProducto(${producto.id})">Ver más</button>
+  // Agrupar productos en grupos de 3
+  for(let i = 0; i < productos.length; i += 3) {
+    const grupo = productos.slice(i, i + 3);
+    const div = document.createElement("div");
+    div.className = `carousel-item ${i === 0 ? 'active' : ''}`;
+    
+    let contenidoGrupo = '<div class="row">';
+    
+    grupo.forEach(producto => {
+      contenidoGrupo += `
+        <div class="col-md-4">
+          <div class="related-card" onclick="verProducto(${producto.id})">
+            <div class="product-image">
+              <img src="${producto.image}" alt="${producto.name}">
+            </div>
+            <h5>${producto.name}</h5>
+            <p>${producto.currency} ${producto.cost}</p>
           </div>
         </div>
-      </div>
-    `;
-    contenedor.innerHTML += html;
-  });
+      `;
+    });
+
+    contenidoGrupo += '</div>';
+    div.innerHTML = contenidoGrupo;
+    container.appendChild(div);
+  }
 }
 
 // Redirigir al producto recomendado

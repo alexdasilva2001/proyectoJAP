@@ -35,13 +35,19 @@ function activarModoClaro() {
     if (isLoginPage) {
         document.body.style.backgroundColor = "#A5A6F6";
     } else {
-        document.body.style.backgroundColor = "white";
+        document.body.style.backgroundColor = "#E1C5F9";
     }
     
     document.body.style.color = "black";
-    toggleBtn.style.backgroundColor = "#fff";
+    toggleBtn.style.backgroundColor = "#E1C5F9";
     icon.className = "bi bi-moon-fill";
     icon.style.color = "#642F8C";
+    
+    // Ajustar el color del título de productos relacionados
+    const tituloRelacionados = document.querySelector('.container.py-5 h3');
+    if (tituloRelacionados) {
+        tituloRelacionados.style.color = "black";
+    }
     
     // Efecto hover para modo claro
     toggleBtn.onmouseover = () => {
@@ -66,6 +72,12 @@ function activarModoOscuro() {
     toggleBtn.style.backgroundColor = "#a47ad0";
     icon.className = "bi bi-sun-fill";
     icon.style.color = "yellow";
+    
+    // Ajustar el color del título de productos relacionados
+    const tituloRelacionados = document.querySelector('.container.py-5 h3');
+    if (tituloRelacionados) {
+        tituloRelacionados.style.color = "white";
+    }
     
     // Efecto hover para modo oscuro
     toggleBtn.onmouseover = () => {
