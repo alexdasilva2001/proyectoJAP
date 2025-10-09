@@ -7,6 +7,10 @@
 
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/products-styles.css" rel="stylesheet" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
   </head>
 
   <body>
@@ -21,13 +25,19 @@
             <option value="soldCountDesc">Más Vendidos</option>
             <option value="soldCountAsc">Menos Vendidos</option>
           </select>
-          </div> 
-          <input type="text" id="preciominimo" placeholder="Precio minimo">
-          <input type="text" id="preciomaximo" placeholder="Precio maximo">
-          <button id="filterButton" class="btn btn-outline-dark">Filtrar</button>
-          <div class="mx-auto">
-            <input type="search" id="buscador" class="form-control" placeholder="Buscar...">
-          </div>
+        </div>
+        
+        <input type="text" id="preciominimo" placeholder="Precio minimo" />
+        <input type="text" id="preciomaximo" placeholder="Precio maximo" />
+        <button id="filterButton" class="btn btn-outline-dark">Filtrar</button>
+        <div class="mx-auto">
+          <input
+            type="search"
+            id="buscador"
+            class="form-control"
+            placeholder="Buscar..."
+          />
+        </div>
       </nav>
     </header>
     <main>
@@ -37,5 +47,6 @@
     </main>
     <script src="js/products.js"></script>
     <script src="js/session.js"></script>
+    <script src="js/light-and-dark-mode.js"></script>
   </body>
 </html>
