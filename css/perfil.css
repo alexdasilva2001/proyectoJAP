@@ -1,0 +1,58 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding-top: 70px; /* espacio por navbar */
+}
+
+.perfil-container {
+  text-align: center;
+  color: white;
+}
+
+.foto-perfil {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.usuario {
+  font-size: 20px;
+  margin-top: 15px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #000;
+}
+
+.formulario {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+input:focus {
+  outline: none;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Soporte para modo oscuro */
+[data-bs-theme="dark"] {
+  background-color: #121212;
+  color: #f8f9fa;
+}
+
+[data-bs-theme="dark"] .card {
+  background-color: #1e1e1e;
+  color: #fff;
+}
+
+[data-bs-theme="dark"] input {
+  background-color: #333;
+  color: #fff;
+}
