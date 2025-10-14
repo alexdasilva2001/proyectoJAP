@@ -37,7 +37,7 @@ body {
 .product-card:hover {
   transform: translateY(-10px);
   box-shadow: 0 12px 20px rgba(0,0,0,0.15);
-  border-color: #d0d0d0; /* El borde se oscurece ligeramente en hover */
+  border-color: #c7c7c7; /* El borde se oscurece ligeramente en hover */
   cursor: pointer;
 }
 
@@ -113,4 +113,36 @@ body {
   margin-right: 1rem;
   background-attachment: fixed;
   background-color: #e0e0e0;
+}
+
+#barrita {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background-color: #999595;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+#filterButton {
+  margin-left: 1rem;
+  background-attachment: fixed;
+  background-color: #e0e0e0;
+  border: 1px solid #ccc;
+}
+
+#buscador {
+  margin-left: 1rem;
+  background-attachment: fixed;
+  background-color: #e0e0e0;
+  border: 1px solid #ccc;
+}
+#buscador::placeholder {
+  color: #999595;
+  opacity: 1; /* Asegura que el color del placeholder sea sólido */
+}
+
+#navbarTitle {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #ffffff;
 }
