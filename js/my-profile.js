@@ -2,10 +2,32 @@ document.addEventListener('DOMContentLoaded', () => {
   const editarBtn = document.getElementById('editarFotoBtn') || document.querySelector('.editar-foto');
   const inputFoto = document.getElementById('inputFoto') || document.querySelector('input[type="file"]');
   const fotoPerfil = document.getElementById('fotoPerfil') || document.querySelector('.foto-perfil');
+  const nombreUsuario = document.getElementById('nombreUsuario');
+  const correoPerfil = document.getElementById('correo'); 
 
-  if (!editarBtn || !inputFoto || !fotoPerfil) {
+  if (!editarBtn || !inputFoto || !fotoPerfil || !nombreUsuario) {
     console.error('Faltan elementos del perfil en el HTML');
     return;
+  }
+
+  // Cargar avatar guardado si existe
+  try {
+    const saved = localStorage.getItem('miAvatar');
+    if (saved) fotoPerfil.src = saved;
+  } catch (err) {
+    console.warn('No se pudo acceder a localStorage:', err);
+  }
+
+  // Cargar nombre de usuario
+  const username = localStorage.getItem('username');
+  if (username) {
+    nombreUsuario.innerText = username;
+  }
+
+  // Cargar correo electrónico (nuevo)
+  const email = localStorage.getItem('email');
+  if (correoPerfil && email) {
+    correoPerfil.value = email;
   }
 
   // Click en el lápiz abre el selector de archivos
@@ -41,12 +63,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     reader.readAsDataURL(file);
   });
-
-  // Cargar avatar guardado si existe
-  try {
-    const saved = localStorage.getItem('miAvatar');
-    if (saved) fotoPerfil.src = saved;
-  } catch (err) {
-    console.warn('No se pudo acceder a localStorage:', err);
-  }
 });
