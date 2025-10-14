@@ -31,7 +31,10 @@ document.body.appendChild(toggleBtn);
 function activarModoClaro() {
     // Detectar si estamos en la página de login
     const isLoginPage = window.location.pathname.includes('login.html');
-    
+    const navbar = document.getElementById('barrita');
+    const navbartitle = document.getElementById('navbarTitle') 
+   
+
     if (isLoginPage) {
         document.body.style.backgroundColor = "#A5A6F6";
     } else {
@@ -42,7 +45,10 @@ function activarModoClaro() {
     toggleBtn.style.backgroundColor = "#E1C5F9";
     icon.className = "bi bi-moon-fill";
     icon.style.color = "#642F8C";
-    
+    navbar.style.backgroundColor = "#642F8C";
+    navbar.style.boxShadow = "0 2px 10px rgba(0,0,0,0.1)";
+    navbartitle.style.color = "white"
+        
     // Ajustar el color del título de productos relacionados
     const tituloRelacionados = document.querySelector('.container.py-5 h3');
     if (tituloRelacionados) {
@@ -61,7 +67,9 @@ function activarModoClaro() {
 function activarModoOscuro() {
     // Detectar si estamos en la página de login
     const isLoginPage = window.location.pathname.includes('login.html');
-    
+    const navbar = document.getElementById('barrita');
+    const navbartitle = document.getElementById('navbarTitle')    
+
     if (isLoginPage) {
         document.body.style.backgroundColor = "#122883";
     } else {
@@ -72,7 +80,10 @@ function activarModoOscuro() {
     toggleBtn.style.backgroundColor = "#a47ad0";
     icon.className = "bi bi-sun-fill";
     icon.style.color = "yellow";
-    
+    navbar.style.backgroundColor = "#d7b8f5";
+    navbar.style.boxShadow = "0 2px 10px rgba(0,0,0,0.1)";
+    navbartitle.style.color = "black"
+
     // Ajustar el color del título de productos relacionados
     const tituloRelacionados = document.querySelector('.container.py-5 h3');
     if (tituloRelacionados) {
