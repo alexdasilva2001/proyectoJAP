@@ -10,9 +10,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const nombreUsuario = document.getElementById("nombreUsuario");
   const correoPerfil = document.getElementById("correo");
 
-  const camposIds = ["nombre", "apellido", "usuario", "telefono", "correo"];
+  const camposIds = ["nombre", "apellido", "usuario", "telefono"];
   const camposPerfil = camposIds.map(id => document.getElementById(id)).filter(Boolean);
 
+  // Actualizar navbar con avatar y nombre
   function actualizarNavbar() {
     if (!barra || !userNavLink) return;
     barra.innerHTML = '';
@@ -43,17 +44,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Cargar datos de localStorage
   function cargarDatosPerfil() {
     camposPerfil.forEach(input => {
       const valor = localStorage.getItem(input.id);
       if (valor) input.value = valor;
     });
 
-    if (nombreUsuario) nombreUsuario.textContent = localStorage.getItem("usuario") || 'USUARIO';
+    if (nombreUsuario) nombreUsuario.textContent = localStorage.getItem("usuario") || "USUARIO";
     if (fotoPerfil) fotoPerfil.src = localStorage.getItem("miAvatar") || "img/default-avatar.jpg";
+
+    const email = localStorage.getItem("correo");
+    if (correoPerfil && email) correoPerfil.value = email;
+
     actualizarNavbar();
   }
 
+  // Guardar datos en localStorage
   function guardarDatosPerfil() {
     camposPerfil.forEach(input => localStorage.setItem(input.id, input.value.trim()));
     if (nombreUsuario) nombreUsuario.textContent = localStorage.getItem("usuario");
@@ -74,19 +81,22 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => toastEl.remove(), 3000);
   }
 
+  // Deshabilitar campos (por defecto)
   function deshabilitarCampos() {
     camposPerfil.forEach(input => input.disabled = true);
     if (guardarCambiosBtn) guardarCambiosBtn.classList.add("d-none");
     if (editarPerfilBtn) editarPerfilBtn.classList.remove("d-none");
+    if (correoPerfil) correoPerfil.disabled = true;
   }
 
+  // Habilitar campos para editar (excepto correo)
   function habilitarCampos() {
     camposPerfil.forEach(input => input.disabled = false);
     if (guardarCambiosBtn) guardarCambiosBtn.classList.remove("d-none");
     if (editarPerfilBtn) editarPerfilBtn.classList.add("d-none");
   }
 
-  // Inicializar
+  // Inicialización
   deshabilitarCampos();
   cargarDatosPerfil();
 
@@ -97,6 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
     profileForm.addEventListener("submit", e => {
       e.preventDefault();
       if (!guardarCambiosBtn) return;
+
       guardarCambiosBtn.disabled = true;
       guardarCambiosBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Guardando...`;
 
