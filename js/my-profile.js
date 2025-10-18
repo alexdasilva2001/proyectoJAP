@@ -1,52 +1,132 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const editarBtn = document.getElementById('editarFotoBtn') || document.querySelector('.editar-foto');
-  const inputFoto = document.getElementById('inputFoto') || document.querySelector('input[type="file"]');
-  const fotoPerfil = document.getElementById('fotoPerfil') || document.querySelector('.foto-perfil');
+// my-profile.js
 
-  if (!editarBtn || !inputFoto || !fotoPerfil) {
-    console.error('Faltan elementos del perfil en el HTML');
-    return;
+document.addEventListener("DOMContentLoaded", () => {
+  const barra = document.getElementById("usuariobarra");
+  const userNavLink = document.getElementById("userNavLink");
+  const profileForm = document.getElementById("profileForm");
+  const editarPerfilBtn = document.getElementById("editarPerfilBtn");
+  const guardarCambiosBtn = document.getElementById("guardarCambiosBtn");
+  const editarFotoBtn = document.getElementById("editarFotoBtn");
+  const inputFoto = document.getElementById("inputFoto");
+  const fotoPerfil = document.getElementById("fotoPerfil");
+  const nombreUsuario = document.getElementById("nombreUsuario");
+
+  const camposIds = ["nombre", "apellido", "usuario", "telefono", "correo"];
+  const camposPerfil = camposIds.map(id => document.getElementById(id));
+
+  function actualizarNavbar() {
+    if (!barra || !userNavLink) return;
+    barra.innerHTML = '';
+
+    const usuarioGuardado = localStorage.getItem("usuario");
+    const avatarGuardado = localStorage.getItem("miAvatar") || "img/Generic avatar.png";
+
+    if (usuarioGuardado) {
+      const avatarImg = document.createElement("img");
+      avatarImg.src = avatarGuardado;
+      avatarImg.alt = "Avatar";
+      avatarImg.style.width = "30px";
+      avatarImg.style.height = "30px";
+      avatarImg.style.borderRadius = "50%";
+      avatarImg.style.objectFit = "cover";
+      avatarImg.classList.add("me-2");
+
+      const nombreSpan = document.createElement("span");
+      nombreSpan.textContent = usuarioGuardado;
+
+      barra.appendChild(avatarImg);
+      barra.appendChild(nombreSpan);
+
+      userNavLink.setAttribute("href", "my-profile.html");
+    } else {
+      barra.textContent = "Inicia sesión / Regístrate";
+      userNavLink.setAttribute("href", "login.html");
+    }
   }
 
-  // Click en el lápiz abre el selector de archivos
-  editarBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    inputFoto.click();
-  });
-
-  // Cuando el usuario elige archivo
-  inputFoto.addEventListener('change', (e) => {
-    const file = e.target.files && e.target.files[0];
-    if (!file) return;
-
-    if (!file.type.startsWith('image/')) {
-      alert('Por favor seleccioná una imagen válida.');
-      return;
-    }
-
-    const maxMB = 5;
-    if (file.size > maxMB * 1024 * 1024) {
-      alert(`La imagen es muy grande. Máximo permitido: ${maxMB} MB.`);
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.addEventListener('load', (ev) => {
-      fotoPerfil.src = ev.target.result;
-      try {
-        localStorage.setItem('miAvatar', ev.target.result);
-      } catch (err) {
-        console.warn('No se pudo guardar avatar en localStorage:', err);
-      }
+  function cargarDatosPerfil() {
+    camposPerfil.forEach(input => {
+      const valor = localStorage.getItem(input.id);
+      if (valor) input.value = valor;
     });
-    reader.readAsDataURL(file);
-  });
 
-  // Cargar avatar guardado si existe
-  try {
-    const saved = localStorage.getItem('miAvatar');
-    if (saved) fotoPerfil.src = saved;
-  } catch (err) {
-    console.warn('No se pudo acceder a localStorage:', err);
+    if (nombreUsuario) nombreUsuario.textContent = localStorage.getItem("usuario") || '';
+    if (fotoPerfil) fotoPerfil.src = localStorage.getItem("miAvatar") || "img/Generic avatar.png";
+    actualizarNavbar();
+  }
+
+  function guardarDatosPerfil() {
+    camposPerfil.forEach(input => localStorage.setItem(input.id, input.value.trim()));
+    if (nombreUsuario) nombreUsuario.textContent = localStorage.getItem("usuario");
+    if (fotoPerfil) fotoPerfil.src = localStorage.getItem("miAvatar");
+    actualizarNavbar();
+
+    const toastEl = document.createElement("div");
+    toastEl.classList.add("toast", "position-fixed", "bottom-0", "end-0", "m-3");
+    toastEl.innerHTML = `
+      <div class="toast-header">
+        <strong class="me-auto">Perfil</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+      </div>
+      <div class="toast-body">Datos guardados correctamente</div>`;
+    document.body.appendChild(toastEl);
+    new bootstrap.Toast(toastEl).show();
+    setTimeout(() => toastEl.remove(), 3000);
+  }
+
+  function deshabilitarCampos() {
+    camposPerfil.forEach(input => input.disabled = true);
+    if (guardarCambiosBtn) guardarCambiosBtn.classList.add("d-none");
+    if (editarPerfilBtn) editarPerfilBtn.classList.remove("d-none");
+  }
+
+  function habilitarCampos() {
+    camposPerfil.forEach(input => input.disabled = false);
+    if (guardarCambiosBtn) guardarCambiosBtn.classList.remove("d-none");
+    if (editarPerfilBtn) editarPerfilBtn.classList.add("d-none");
+  }
+
+  // Inicializar
+  deshabilitarCampos();
+  cargarDatosPerfil();
+
+  // Eventos
+  if (editarPerfilBtn) editarPerfilBtn.addEventListener("click", habilitarCampos);
+
+  if (profileForm) {
+    profileForm.addEventListener("submit", e => {
+      e.preventDefault();
+      if (!guardarCambiosBtn) return;
+      guardarCambiosBtn.disabled = true;
+      guardarCambiosBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Guardando...`;
+
+      setTimeout(() => {
+        guardarDatosPerfil();
+        deshabilitarCampos();
+        guardarCambiosBtn.disabled = false;
+        guardarCambiosBtn.innerHTML = `<i class="bi bi-save me-1"></i> Guardar cambios`;
+      }, 1000);
+    });
+  }
+
+  if (editarFotoBtn && inputFoto && fotoPerfil) {
+    editarFotoBtn.addEventListener("click", e => {
+      e.preventDefault();
+      inputFoto.click();
+    });
+
+    inputFoto.addEventListener("change", e => {
+      const file = e.target.files?.[0];
+      if (!file || !file.type.startsWith("image/")) return alert("Selecciona una imagen válida.");
+      if (file.size > 5 * 1024 * 1024) return alert("Imagen demasiado grande. Máx 5MB.");
+
+      const reader = new FileReader();
+      reader.onload = ev => {
+        fotoPerfil.src = ev.target.result;
+        localStorage.setItem("miAvatar", ev.target.result);
+        actualizarNavbar();
+      };
+      reader.readAsDataURL(file);
+    });
   }
 });

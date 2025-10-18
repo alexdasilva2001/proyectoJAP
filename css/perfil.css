@@ -1,58 +1,231 @@
+/* ================================
+   VARIABLES DE COLOR Y TEMAS
+================================ */
+:root {
+  /* Colores principales */
+  --bg-color: linear-gradient(135deg, #f8f4fc 0%, #E1C5F9 100%);
+  --text-color: #2d1b46;
+  --card-bg: #ffffff;
+  --navbar-bg: #642F8C;
+  --navbar-text: white;
+
+  /* Inputs y controles */
+  --input-bg: #ffffff;
+  --input-border: #ccc;
+  --input-focus: #4a90e2;
+
+  /* Botones */
+  --btn-primary: #642F8C;
+  --btn-hover: #4B2A78;
+  --switch-bg: #642F8C;
+
+  /* Valores extra */
+  --navbar-height: 60px;
+  --border-radius: 15px;
+  --profile-photo-size: 150px;
+}
+
+[data-bs-theme="dark"] {
+  --bg-color: linear-gradient(135deg, #4B2A78 0%, #2d1b46 100%);
+  --text-color: #f3eaff;
+  --card-bg: #4B2A78;
+  --input-bg: #2d1b46;
+  --input-border: #8655BD;
+  --input-focus: #A47AD0;
+  --btn-primary: #A47AD0;
+  --btn-hover: #8655BD;
+}
+
+/* ================================
+   ESTILOS GENERALES
+================================ */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  padding-top: 70px; /* espacio por navbar */
+  background: var(--bg-color);
+  color: var(--text-color);
+  padding-top: var(--navbar-height);
+  min-height: 100vh;
+  transition: background-color 0.3s, color 0.3s;
 }
 
+/* ================================
+   NAVBAR
+================================ */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: var(--navbar-bg) !important;
+}
+
+.navbar a.nav-link {
+  color: var(--navbar-text) !important;
+}
+
+/* Avatar pequeño en navbar */
+.navbar-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 0.5rem;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+[data-bs-theme="dark"] .navbar-avatar {
+  border-color: rgba(0,0,0,0.2);
+}
+
+/* ================================
+   PERFIL / TARJETA
+================================ */
 .perfil-container {
   text-align: center;
-  color: white;
+  color: inherit;
+}
+
+.card {
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius);
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  animation: fadeIn 0.5s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+/* ================================
+   FOTO DE PERFIL
+================================ */
+.foto-container {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 1rem;
 }
 
 .foto-perfil {
-  width: 150px;
-  height: 150px;
+  width: var(--profile-photo-size);
+  height: var(--profile-photo-size);
   border-radius: 50%;
   object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
+.foto-perfil:hover {
+  transform: scale(1.05);
+}
+
+#editarFotoBtn {
+  width: 35px;
+  height: 35px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+#editarFotoBtn:hover {
+  transform: scale(1.1);
+  background-color: #e9ecef;
+}
+
+/* ================================
+   NOMBRE DE USUARIO
+================================ */
 .usuario {
-  font-size: 20px;
-  margin-top: 15px;
-  font-weight: bold;
+  font-size: 1.25rem;
+  margin-top: 1rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  color: #000;
+  letter-spacing: 0.125rem;
+  color: inherit;
 }
 
+/* ================================
+   FORMULARIO
+================================ */
 .formulario {
-  margin-top: 30px;
+  margin-top: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 1rem;
 }
 
-input:focus {
+.formulario input {
+  background-color: var(--input-bg);
+  border: 1px solid var(--input-border);
+  color: var(--text-color);
+  transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+  text-align: center;
+}
+
+.formulario input:focus {
   outline: none;
-  background-color: rgba(0, 0, 0, 0.1);
+  border-color: var(--input-focus);
+  box-shadow: 0 0 5px var(--input-focus);
 }
 
-/* Soporte para modo oscuro */
-[data-bs-theme="dark"] {
-  background-color: #121212;
-  color: #f8f9fa;
+/* ===== MODO EDICIÓN ===== */
+.formulario input:enabled {
+  background-color: #f8f4ff;
+  border-color: var(--btn-primary);
+  box-shadow: 0 0 5px rgba(100, 47, 140, 0.2);
+}
+
+/* ===== MODO OSCURO ===== */
+[data-bs-theme="dark"] body {
+  background: var(--bg-color);
+  color: var(--text-color);
 }
 
 [data-bs-theme="dark"] .card {
-  background-color: #1e1e1e;
+  background-color: var(--card-bg);
   color: #fff;
 }
 
-[data-bs-theme="dark"] input {
-  background-color: #333;
+[data-bs-theme="dark"] .formulario input {
+  background-color: var(--input-bg);
   color: #fff;
+  border-color: var(--input-border);
+}
+
+[data-bs-theme="dark"] .formulario input:focus {
+  box-shadow: 0 0 5px var(--input-focus);
+}
+
+/* ================================
+   MEDIA QUERIES
+================================ */
+@media (max-width: 768px) {
+  :root {
+    --profile-photo-size: 120px;
+  }
+
+  .usuario {
+    font-size: 1rem;
+  }
+
+  .formulario {
+    width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --profile-photo-size: 100px;
+  }
+
+  .card {
+    margin: 0 1rem;
+  }
+}
+
+/* ================================
+   ANIMACIONES
+================================ */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

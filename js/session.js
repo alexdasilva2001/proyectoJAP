@@ -1,46 +1,79 @@
-// Esto hace que un usuario que ya está logueado, no vuelva a login.html:
-if (
-  localStorage.getItem("logueado") === "true" &&
-  window.location.pathname.includes("login.html")
-) {
-  window.location.href = "index.html";
-}
+// session.js
 
-// Captura el form del login:
-const form = document.querySelector("form");
-if (form) {
-form.addEventListener("submit", function (event) {
-  const usuario = document.getElementById("usuario").value.trim();
-  const contraseña = document.getElementById("contraseña").value.trim();
-  if (usuario !== "" && contraseña !== "") {
-    localStorage.setItem("logueado", "true");
-    localStorage.setItem("usuario", usuario);
-  }
-});
-}
-
-// Carga la pág.:
 document.addEventListener("DOMContentLoaded", () => {
-  const usuarioGuardado = localStorage.getItem("usuario");
   const barra = document.getElementById("usuariobarra");
   const userNavLink = document.getElementById("userNavLink");
 
-  if (usuarioGuardado) {
-    // Esto muestra el usuario en la navbar:
-    if (barra) barra.innerHTML = usuarioGuardado;
-    //Esto hace que el link lleve al perfil:
-    if (userNavLink) userNavLink.setAttribute("href", "my-profile.html");
+  function actualizarNavbar() {
+    if (!barra || !userNavLink) return;
 
-    // Si existe usuario, mostrarlo en el perfil:
-    const guardado = document.getElementById("usuarioguardado");
-    if (guardado) guardado.innerHTML = usuarioGuardado;
+    const usuarioGuardado = localStorage.getItem("usuario");
+    const avatarGuardado =
+      localStorage.getItem("miAvatar") || "img/Generic avatar.png";
 
-    // Con esto se ocultan los "Inicia sesión" y "Regístrate":
-    const loginLinks = document.querySelector(".login-links");
-    if (loginLinks) loginLinks.style.display = "none";
-  } else {
-    // Sin usuario: texto por defecto + link a login
-    if (barra) barra.textContent = "Inicia sesión / Regístrate";
-    if (userNavLink) userNavLink.setAttribute("href", "login.html");
+    if (usuarioGuardado) {
+      // Limpiar el contenido anterior
+      barra.innerHTML = '';
+
+      // Crear imagen de avatar
+      const avatarImg = document.createElement("img");
+      avatarImg.src = avatarGuardado;
+      avatarImg.alt = "Avatar";
+      avatarImg.style.width = "30px";
+      avatarImg.style.height = "30px";
+      avatarImg.style.borderRadius = "50%";
+      avatarImg.style.objectFit = "cover";
+      avatarImg.classList.add("me-2");
+
+      // Crear span con nombre
+      const nombreSpan = document.createElement("span");
+      nombreSpan.textContent = usuarioGuardado;
+
+      // Agregar elementos al navbar
+      barra.appendChild(avatarImg);
+      barra.appendChild(nombreSpan);
+
+      userNavLink.setAttribute("href", "my-profile.html");
+    } else {
+      barra.innerHTML = "Inicia sesión / Regístrate";
+      userNavLink.setAttribute("href", "login.html");
+    }
   }
+
+  // Redirección si ya está logueado
+  const ruta = window.location.pathname;
+  if (
+    localStorage.getItem("logueado") === "true" &&
+    (ruta.includes("login.html") || ruta.includes("register.html"))
+  ) {
+    window.location.href = "index.html";
+  }
+
+  // Captura el form de login
+  const form = document.querySelector("form");
+  if (form) {
+    form.addEventListener("submit", () => {
+      const usuario = document.getElementById("usuario")?.value.trim();
+      const contraseña = document.getElementById("contraseña")?.value.trim();
+      if (usuario && contraseña) {
+        localStorage.setItem("logueado", "true");
+        localStorage.setItem("usuario", usuario);
+        if (!localStorage.getItem("miAvatar")) {
+          localStorage.setItem("miAvatar", "img/Generic avatar.png");
+        }
+        // Actualizar navbar inmediatamente
+        actualizarNavbar();
+      }
+    });
+  }
+
+  // Actualizar navbar al cargar la página
+  actualizarNavbar();
+
+  // Escuchar cambios en localStorage (útil si se actualiza desde otra pestaña o my-profile)
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'usuario' || e.key === 'miAvatar') {
+      actualizarNavbar();
+    }
+  });
 });
