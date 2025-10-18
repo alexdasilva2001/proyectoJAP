@@ -1,5 +1,3 @@
-// my-profile.js
-
 document.addEventListener("DOMContentLoaded", () => {
   const barra = document.getElementById("usuariobarra");
   const userNavLink = document.getElementById("userNavLink");
@@ -10,16 +8,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const inputFoto = document.getElementById("inputFoto");
   const fotoPerfil = document.getElementById("fotoPerfil");
   const nombreUsuario = document.getElementById("nombreUsuario");
+  const correoPerfil = document.getElementById("correo");
 
   const camposIds = ["nombre", "apellido", "usuario", "telefono", "correo"];
-  const camposPerfil = camposIds.map(id => document.getElementById(id));
+  const camposPerfil = camposIds.map(id => document.getElementById(id)).filter(Boolean);
 
   function actualizarNavbar() {
     if (!barra || !userNavLink) return;
     barra.innerHTML = '';
 
     const usuarioGuardado = localStorage.getItem("usuario");
-    const avatarGuardado = localStorage.getItem("miAvatar") || "img/Generic avatar.png";
+    const avatarGuardado = localStorage.getItem("miAvatar") || "img/default-avatar.jpg";
 
     if (usuarioGuardado) {
       const avatarImg = document.createElement("img");
@@ -50,8 +49,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (valor) input.value = valor;
     });
 
-    if (nombreUsuario) nombreUsuario.textContent = localStorage.getItem("usuario") || '';
-    if (fotoPerfil) fotoPerfil.src = localStorage.getItem("miAvatar") || "img/Generic avatar.png";
+    if (nombreUsuario) nombreUsuario.textContent = localStorage.getItem("usuario") || 'USUARIO';
+    if (fotoPerfil) fotoPerfil.src = localStorage.getItem("miAvatar") || "img/default-avatar.jpg";
     actualizarNavbar();
   }
 
@@ -61,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (fotoPerfil) fotoPerfil.src = localStorage.getItem("miAvatar");
     actualizarNavbar();
 
+    // Toast de éxito
     const toastEl = document.createElement("div");
     toastEl.classList.add("toast", "position-fixed", "bottom-0", "end-0", "m-3");
     toastEl.innerHTML = `
@@ -84,26 +84,6 @@ document.addEventListener("DOMContentLoaded", () => {
     camposPerfil.forEach(input => input.disabled = false);
     if (guardarCambiosBtn) guardarCambiosBtn.classList.remove("d-none");
     if (editarPerfilBtn) editarPerfilBtn.classList.add("d-none");
-  }
-
-  // Cargar avatar guardado si existe
-  try {
-    const saved = localStorage.getItem('miAvatar');
-    if (saved) fotoPerfil.src = saved;
-  } catch (err) {
-    console.warn('No se pudo acceder a localStorage:', err);
-  }
-
-  // Cargar nombre de usuario
-  const username = localStorage.getItem('username');
-  if (username) {
-    nombreUsuario.innerText = username;
-  }
-
-  // Cargar correo electrónico (nuevo)
-  const email = localStorage.getItem('email');
-  if (correoPerfil && email) {
-    correoPerfil.value = email;
   }
 
   // Inicializar

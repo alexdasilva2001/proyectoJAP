@@ -14,7 +14,7 @@
   
   <!-- Estilos del perfil -->
   <link rel="stylesheet" href="css/perfil.css">
-  <link rel="stylesheet" href="css/perfil.css">
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="bg-light">
 
@@ -31,6 +31,9 @@
           <li class="nav-item"><a class="nav-link" href="categories.html">Categorías</a></li>
           <li class="nav-item"><a class="nav-link" href="sell.html">Vender</a></li>
         </ul>
+        <div id="usuariobarra" class="d-flex align-items-center ms-3">
+          <a id="userNavLink" href="login.html" class="text-white text-decoration-none">Inicia sesión / Regístrate</a>
+        </div>
       </div>
     </div>
   </nav>
@@ -62,7 +65,7 @@
         </div>
 
         <!-- NOMBRE DE USUARIO -->
-        <h5 id="nombreUsuario" id="nombreUsuario" class="usuario mb-4 fw-bold">USUARIO</h5>
+        <h5 id="nombreUsuario" class="usuario mb-4 fw-bold">USUARIO</h5>
 
         <!-- BOTÓN EDITAR PERFIL -->
         <button id="editarPerfilBtn" class="btn btn-outline-primary w-100 mb-3" type="button">
@@ -93,7 +96,7 @@
           </div>
           
           <div class="mb-3">
-            <input type="email" id="Correo" class="form-control text-center" placeholder="Correo electrónico" disabled>
+            <input type="email" id="correo" class="form-control text-center" placeholder="Correo electrónico" disabled>
           </div>
 
           <!-- BOTÓN GUARDAR CAMBIOS (oculto inicialmente) -->
