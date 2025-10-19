@@ -140,4 +140,18 @@ document.addEventListener("DOMContentLoaded", () => {
       reader.readAsDataURL(file);
     });
   }
+
+  const resetImgBtn = document.getElementById("resetImgBtn");
+  if (resetImgBtn && fotoPerfil) {
+    resetImgBtn.addEventListener("click", () => {
+      const confirmar = confirm("¿Querés restablecer tu foto de perfil al avatar por defecto?");
+      if (confirmar) {
+        localStorage.removeItem("miAvatar");
+        fotoPerfil.src = "img/default-avatar.jpg";
+        actualizarNavbar();
+      }
+    });
+  }
+
+  // La imagen se guarda en localStorage en formato Base64. Esto asegura que persista inclusive al cerrar el navegador
 });
