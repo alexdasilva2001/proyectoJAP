@@ -1,5 +1,3 @@
-// light-and-dark-mode.js - Versión mejorada con Bootstrap integration
-
 let darkMode = localStorage.getItem('darkMode') === 'true' || false;
 
 // Crear botón toggle flotante
