@@ -35,6 +35,11 @@
             <a class="nav-link" href="sell.html">Vender</a>
           </li>
           <li class="nav-item">
+              <a class="nav-link" id="userNavLink" href="login.html">
+                <span id="usuariobarra"></span>
+              </a>
+          </li>
+          <li class="nav-item">
           </li>
         </ul>
       </div>
@@ -42,9 +47,39 @@
   </nav>
   <main>
     <div class="container">
-      <div class="alert alert-danger text-center" role="alert">
-        <h4 class="alert-heading">Funcionalidad en desarrollo</h4>
+      <div class="row mt-4">
+        <h1>Carrito de Compras</h1> 
       </div>
+      <div id="cart-container" class="row mt-4">
+      <table class="table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Imagen</th>
+          <th>Costo</th>
+          <th>Cantidad</th>
+          <th>Moneda</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody id="cart-items">
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><input type="number" min="1" value="1" style="background-color: rgb(255, 255, 255);"></td>
+          <td><select class="Moneda">
+            <option value="UYU">$</option>
+            <option value="USD">US$</option>
+            </select>
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+      </table>
+      <div class="d-flex justify-content-end">
+        <h4 id="total-cost">Total:</h4>
+      </div>  
     </div>
   </main>
   <footer class="text-muted">
@@ -66,6 +101,8 @@
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/init.js"></script>
   <script src="js/cart.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/session.js"></script>
   <script src="js/light-and-dark-mode.js"></script>
 </body>
 

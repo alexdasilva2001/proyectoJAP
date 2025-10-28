@@ -248,3 +248,4 @@ function verProducto(id) {
   localStorage.setItem("productID", id);
   window.location = "product-info.html";
 }
+
