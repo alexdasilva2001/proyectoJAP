@@ -7,9 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
     UYU: 1,
   };
 
-  // 🧮 Función auxiliar: convertir precio según moneda
-  function convertPrice(priceUYU, currency) {
-    return priceUYU * conversionRates[currency];
+  function convertPrice(costoUYU, currency) {
+    return costoYU * conversionRates[currency];
   }
 
   // 🎨 Render del carrito
@@ -36,31 +35,30 @@ document.addEventListener("DOMContentLoaded", () => {
             .map(
               (product, index) => `
                 <tr>
-                  <td>${product.name}</td>
-                  <td>${product.image}</td>
+                  <td>${producto.name}</td>
+                  <td>${producto.image}</td>
                   <td>
                     <input 
                       type="number" 
                       min="1" 
-                      value="${product.quantity}" 
+                      value="${producto.quantity}" 
                       data-index="${index}" 
                       class="quantity-input"
                       style="width:60px;"
                     >
                   </td>
                   <td class="price-cell" data-index="${index}">
-                    ${convertPrice(product.priceUSD, product.currency).toFixed(2)}
+                    ${convertPrice(producto.costUSD, producto.currency).toFixed(2)}
                   </td>
                   <td>
                     <select data-index="${index}" class="currency-select">
-                      <option value="USD" ${product.currency === "USD" ? "selected" : ""}>USD</option>
-                      <option value="UYU" ${product.currency === "UYU" ? "selected" : ""}>UYU</option>
-                      <option value="EUR" ${product.currency === "EUR" ? "selected" : ""}>EUR</option>
+                      <option value="USD" ${producto.currency === "USD" ? "selected" : ""}>USD</option>
+                      <option value="UYU" ${producto.currency === "UYU" ? "selected" : ""}>UYU</option>
                     </select>
                   </td>
                   <td class="total-cell" data-index="${index}">
                     ${(
-                      convertPrice(product.priceUSD, product.currency) * product.quantity
+                      convertPrice(product.costoUYU, product.currency) * product.quantity
                     ).toFixed(2)}
                   </td>
                 </tr>
@@ -98,7 +96,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 🧮 Actualizar totales y precios al cambiar cantidad o moneda
   function updateTotals() {
     let totalGeneral = 0;
 
