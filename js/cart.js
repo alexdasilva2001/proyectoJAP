@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+<<<<<<< HEAD
   const cartItemsContainer = document.getElementById("cart-items");
   const totalCostElement = document.getElementById("total-cost");
 
@@ -86,107 +87,92 @@ document.addEventListener("DOMContentLoaded", () => {
   const totalElem = document.getElementById("total");
   const botonVaciar = document.getElementById("vaciarCarrito");
 
-  let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
-  //  Función para calcular el subtotal
-  function calcularSubtotal(precio, cantidad) {
-    return precio * cantidad;
+  // Si el carrito está vacío
+  if (cart.length === 0) {
+    cartContainer.innerHTML = `
+      <div class="alert alert-info mt-3" role="alert">
+        Tu carrito está vacío 🛒
+      </div>`;
+    subtotalElement.textContent = "Subtotal: USD 0";
+    totalElement.textContent = "Total: USD 0";
+    return;
   }
 
-  function renderCarrito() {
-    carritoContainer.innerHTML = "";
+  // Renderizar los productos
+  let subtotal = 0;
+  cartContainer.innerHTML = ""; // limpiar antes de cargar
 
-    if (carrito.length === 0) {
-      carritoContainer.innerHTML = "<p>Tu carrito está vacío 🛒</p>";
-      totalElem.textContent = "$0";
-      return;
-    }
+  cart.forEach((producto, index) => {
+    const itemSubtotal = producto.unitCost * producto.count;
+    subtotal += itemSubtotal;
 
-    carrito.forEach((producto, index) => {
-      const item = document.createElement("div");
-      item.classList.add(
-        "producto",
-        "d-flex",
-        "align-items-center",
-        "justify-content-between",
-        "border-bottom",
-        "py-2"
-      );
+    const item = document.createElement("div");
+    item.classList.add("cart-item", "border", "rounded", "p-3", "mb-3", "d-flex", "justify-content-between", "align-items-center");
 
-      const subtotal = calcularSubtotal(producto.precio, producto.cantidad);
-
-      item.innerHTML = `
-        <div class="d-flex align-items-center gap-3">
-          <img src="${producto.imagen}" alt="${producto.nombre}" width="60">
-          <div>
-            <h6>${producto.nombre}</h6>
-            <p class="mb-0 text-muted">${producto.moneda} ${producto.precio}</p>
-          </div>
+    item.innerHTML = `
+      <div class="d-flex align-items-center">
+        <img src="${producto.image}" alt="${producto.name}" class="me-3" style="width: 100px; height: 100px; object-fit: cover;">
+        <div>
+          <h5 class="mb-1">${producto.name}</h5>
+          <p class="mb-1 text-muted">${producto.currency} ${producto.unitCost}</p>
+          <button class="btn btn-sm btn-outline-danger eliminar-btn" data-index="${index}">
+            <i class="fa fa-trash"></i> Eliminar
+          </button>
         </div>
-        <div class="d-flex align-items-center gap-2">
-          <input type="number" class="cantidad form-control" style="width:70px" value="${producto.cantidad}" min="1">
-          <span class="subtotal fw-bold">${producto.moneda} ${subtotal.toLocaleString()}</span>
-          <button class="btn btn-sm btn-danger eliminar" data-index="${index}">🗑</button>
-        </div>
-      `;
-      carritoContainer.appendChild(item);
+      </div>
+      <div class="text-end">
+        <input type="number" min="1" value="${producto.count}" class="form-control cantidad-input mb-2" data-index="${index}" style="width: 80px; display: inline-block;">
+        <p class="mb-0 fw-bold item-subtotal">${producto.currency} ${itemSubtotal}</p>
+      </div>
+    `;
+
+    cartContainer.appendChild(item);
+  });
+
+  subtotalElement.textContent = `Subtotal: USD ${subtotal}`;
+  totalElement.textContent = `Total: USD ${subtotal}`;
+
+  // --- EVENTOS ---
+
+  // Actualizar cantidad en tiempo real
+  document.querySelectorAll(".cantidad-input").forEach(input => {
+    input.addEventListener("input", e => {
+      const index = e.target.dataset.index;
+      const nuevaCantidad = parseInt(e.target.value);
+
+      if (nuevaCantidad < 1 || isNaN(nuevaCantidad)) return;
+
+      cart[index].count = nuevaCantidad;
+      localStorage.setItem("cart", JSON.stringify(cart));
+      actualizarTotales();
+    });
+  });
+
+  // Eliminar producto
+  document.querySelectorAll(".eliminar-btn").forEach(btn => {
+    btn.addEventListener("click", e => {
+      const index = e.target.closest("button").dataset.index;
+      cart.splice(index, 1);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      location.reload(); // recargar para reflejar los cambios
+    });
+  });
+
+  // --- FUNCIONES AUXILIARES ---
+  function actualizarTotales() {
+    let nuevoSubtotal = 0;
+
+    document.querySelectorAll(".cart-item").forEach((item, i) => {
+      const cantidad = cart[i].count;
+      const precio = cart[i].unitCost;
+      const itemSubtotal = cantidad * precio;
+
+      item.querySelector(".item-subtotal").textContent = `${cart[i].currency} ${itemSubtotal}`;
+      nuevoSubtotal += itemSubtotal;
     });
 
-    agregarEventosCantidad();
-    agregarEventosEliminar();
-    actualizarTotal();
+    subtotalElement.textContent = `Subtotal: USD ${nuevoSubtotal}`;
+    totalElement.textContent = `Total: USD ${nuevoSubtotal}`;
   }
 
-  function agregarEventosCantidad() {
-    const productos = document.querySelectorAll(".producto");
-
-    productos.forEach((producto, index) => {
-      const cantidadInput = producto.querySelector(".cantidad");
-      const subtotalElem = producto.querySelector(".subtotal");
-
-      cantidadInput.addEventListener("input", () => {
-        const cantidad = parseInt(cantidadInput.value) || 1;
-        carrito[index].cantidad = cantidad;
-
-        const subtotal = calcularSubtotal(carrito[index].precio, cantidad);
-        subtotalElem.textContent = `${carrito[index].moneda} ${subtotal.toLocaleString()}`;
-
-        localStorage.setItem("carrito", JSON.stringify(carrito));
-        actualizarTotal();
-      });
-    });
-  }
-
-  function agregarEventosEliminar() {
-    document.querySelectorAll(".eliminar").forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        const index = e.target.dataset.index;
-        carrito.splice(index, 1);
-        localStorage.setItem("carrito", JSON.stringify(carrito));
-        renderCarrito();
-      });
-    });
-  }
-
-  function actualizarTotal() {
-    let total = 0;
-    carrito.forEach((p) => {
-      total += calcularSubtotal(p.precio, p.cantidad);
-    });
-
-    //  Si todos los productos usan la misma moneda, mostramos esa
-    const moneda = carrito.length > 0 ? carrito[0].moneda : "USD";
-    totalElem.textContent = `${moneda} ${total.toLocaleString()}`;
-  }
-
-  //  Vaciar carrito
-  if (botonVaciar) {
-    botonVaciar.addEventListener("click", () => {
-      localStorage.removeItem("carrito");
-      carrito = [];
-      renderCarrito();
-    });
-  }
-
-  renderCarrito();
-});
