@@ -52,12 +52,19 @@
     <div class="container mt-4">
       <h1>🛒 Carrito de Compras</h1>
       <div id="cart-container" class="mt-4"></div>
+      <div class="d-flex justify-content-end align-items-center mb-3">
+        <label for="currency-select" class="me-2 fw-bold">Moneda:</label>
+          <select id="currency-select" class="form-select w-auto">
+            <option value="USD">USD</option>
+            <option value="UYU">UYU</option>
+          </select>
+      </div>
 
       <!-- Totales -->
       <div class="d-flex justify-content-end mt-3">
         <div class="text-end">
-          <h5 id="subtotal">Subtotal: USD 0</h5>
-          <h4 id="total">Total: USD 0</h4>
+          <h5 id="subtotal"></h5>
+          <h4 id="total"></h4>
         </div>
       </div>
     </div>
@@ -82,10 +89,10 @@
   </div>
 
   <!-- Scripts -->
-  <script src="/js/bootstrap.bundle.min.js"></script>
-  <script src="/js/init.js"></script>
-  <script src="/js/cart.js"></script>
-  <script src="/js/session.js"></script>
-  <script src="/js/light-and-dark-mode.js"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/init.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/session.js"></script>
+  <script src="js/light-and-dark-mode.js"></script>
 </body>
 </html>
