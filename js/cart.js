@@ -91,4 +91,19 @@ document.addEventListener("DOMContentLoaded", () => {
     subtotalElement.textContent = `Subtotal: USD ${nuevoSubtotal}`;
     totalElement.textContent = `Total: USD ${nuevoSubtotal}`;
   }
+
+  // Actualizar badge del carrito en la navbar
+function actualizarBadgeCarrito() {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const total = cart.reduce((acc, prod) => acc + (prod.count || 0), 0);
+
+  const badge = document.getElementById("cart-count");
+  if (badge) {
+    badge.textContent = total;
+    badge.style.display = total > 0 ? "inline" : "none";
+  }
+}
+
+// Ejecutar al cargar la página
+actualizarBadgeCarrito();
 });
