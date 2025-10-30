@@ -92,4 +92,3 @@ document.addEventListener("DOMContentLoaded", () => {
     totalElement.textContent = `Total: USD ${nuevoSubtotal}`;
   }
 });
-

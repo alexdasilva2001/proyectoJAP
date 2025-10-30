@@ -562,3 +562,9 @@ a:hover {
 .offcanvas-title {
   color: var(--text-primary);
 }
+
+#cart-count {
+  top: 10%;
+  left: 90%;
+  transform: translate(-20%, -20%);
+}

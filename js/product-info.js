@@ -45,6 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
           else cart.push(item);
 
           localStorage.setItem("cart", JSON.stringify(cart));
+          actualizarBadgeCarrito();
           window.location = "cart.html";
         });
       }
@@ -229,7 +230,7 @@ function verProducto(id) {
   window.location = "product-info.html";
 }
 
-// Función para agregar producto al carrito
+// FUNCIÓN PARA AGREGAR AL CARRITO (USANDO count)
 function agregarAlCarrito(product) {
   // Obtener carrito del localStorage
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -238,37 +239,76 @@ function agregarAlCarrito(product) {
   const index = cart.findIndex(p => p.id === product.id);
   if (index !== -1) {
     // Si ya existe, aumentar cantidad
-    cart[index].quantity += 1;
+    cart[index].count = (cart[index].count || 0) + 1;
   } else {
-    // Si no existe, agregar con quantity = 1 y moneda por defecto
+    // Si no existe, agregar con count = 1 y campos unificados
     cart.push({
       id: product.id,
       name: product.name,
-      image: product.images[0] || "",
-      costoUYU: product.cost,
+      image: (product.images && product.images[0]) || product.image || "",
+      unitCost: product.cost || product.unitCost || 0,
       currency: product.currency || "UYU",
-      quantity: 1
+      count: 1
     });
   }
 
   // Guardar carrito actualizado en localStorage
   localStorage.setItem("cart", JSON.stringify(cart));
 
+  // Actualizar numerito del carrito en la navbar
+  actualizarBadgeCarrito();
+
   // Alerta opcional
-  showAlert("Producto agregado al carrito", "success");
+  if (typeof showAlert === "function") showAlert("Producto agregado al carrito", "success");
 }
 
-// Asociar botón al producto actual
-document.getElementById("add-to-cart-btn").addEventListener("click", () => {
-  // Obtenemos productID
-  const productID = localStorage.getItem("productID");
-  if (!productID) return;
+// FUNCIÓN GLOBAL: actualizar numerito del carrito
+function actualizarBadgeCarrito() {
+  const badge = document.getElementById("cart-count");
+  if (!badge) return;
 
-  // Obtenemos producto desde la API
-  fetch(`https://japceibal.github.io/emercado-api/products/${productID}.json`)
-    .then(response => response.json())
-    .then(product => {
-      agregarAlCarrito(product);
-    })
-    .catch(err => console.error(err));
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const total = cart.reduce((acc, prod) => acc + (prod.count || 0), 0);
+
+  badge.textContent = total;
+  badge.style.display = total > 0 ? "inline" : "none";
+}
+
+// Ejecutar al cargar la página para sincronizar badge
+document.addEventListener("DOMContentLoaded", actualizarBadgeCarrito);
+
+// ASOCIAR CLICK AL ÍCONO / BOTÓN "AGREGAR AL CARRITO"
+document.addEventListener("DOMContentLoaded", () => {
+  const addBtnIcon = document.getElementById("add-to-cart-btn");
+  if (addBtnIcon) {
+    addBtnIcon.addEventListener("click", () => {
+      const productID = localStorage.getItem("productID");
+      if (!productID) return;
+
+      fetch(`https://japceibal.github.io/emercado-api/products/${productID}.json`)
+        .then(response => response.json())
+        .then(product => {
+          agregarAlCarrito(product);
+        })
+        .catch(err => console.error("Error al agregar al carrito:", err));
+    });
+  }
+
+  // También asociamos al botón "Comprar" si existe
+  const buyBtn = document.querySelector(".btn-buy");
+  if (buyBtn) {
+    buyBtn.addEventListener("click", () => {
+      const productID = localStorage.getItem("productID");
+      if (!productID) return;
+
+      fetch(`https://japceibal.github.io/emercado-api/products/${productID}.json`)
+        .then(response => response.json())
+        .then(product => {
+          agregarAlCarrito(product);
+          // Redirigir al carrito
+          window.location = "cart.html";
+        })
+        .catch(err => console.error("Error en Comprar:", err));
+    });
+  }
 });

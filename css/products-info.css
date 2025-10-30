@@ -427,3 +427,9 @@
     font-size: 1.75rem;
   }
 }
+
+#cart-count {
+  top: 10%;
+  left: 90%;
+  transform: translate(-20%, -20%);
+}
