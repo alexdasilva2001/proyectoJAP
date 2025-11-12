@@ -568,3 +568,72 @@ a:hover {
   left: 90%;
   transform: translate(-20%, -20%);
 }
+
+/* Estilo del carrito actualizado */
+.cart-extra-sections {
+  background-color: #642F8C;
+  color: #ffffff;
+  border-radius: 1rem;
+  padding: 2rem;
+}
+
+.section-title {
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: #ffffff;
+  border-bottom: 2px solid #2D1B46;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.option-card {
+  background-color: #2a1a3a;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  border-radius: 0.7rem;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.option-card:hover {
+  background-color: #ffffff;
+  color: #000;
+}
+
+.option-card input {
+  accent-color: #399941;
+}
+
+.dark-input {
+  background-color: #2a1a3a;
+  color: #fff;
+  border: 1px solid #ffffff;
+  border-radius: 0.5rem;
+}
+
+.dark-input::placeholder {
+  color: #ccc;
+}
+
+.dark-input:focus {
+  border-color: #2D1B46;
+  box-shadow: 0 0 5px #2D1B46;
+}
+
+.btn-finalizar {
+  background-color: #E1C5F9;
+  color: #000;
+  border: none;
+  border-radius: 0.8rem;
+  transition: all 0.3s ease-in-out;
+  font-weight: bold;
+}
+
+.btn-finalizar:hover {
+  background-color: #ffffff;
+  transform: scale(1.05);
+}

@@ -70,6 +70,87 @@
     </div>
   </main>
 
+<!-- Sección de información de compra -->
+<div class="container mt-5 cart-extra-sections">
+
+  <!-- Tipo de envío -->
+  <section class="shipping-section p-4 rounded-4 mb-4">
+    <h3 class="section-title">Tipo de envío</h3>
+    <div class="shipping-options d-flex flex-wrap gap-3 mt-3">
+      <label class="option-card">
+        <input type="radio" name="envio" value="premium" data-percent="15">
+        <span>Premium 2 a 5 días (15%)</span>
+      </label>
+      <label class="option-card">
+        <input type="radio" name="envio" value="express" data-percent="7">
+        <span>Express 5 a 8 días (7%)</span>
+      </label>
+      <label class="option-card">
+        <input type="radio" name="envio" value="standard" data-percent="5">
+        <span>Standard 12 a 15 días (5%)</span>
+      </label>
+    </div>
+  </section>
+
+  <!-- Dirección de envío -->
+  <section class="address-section p-4 rounded-4 mb-4">
+    <h3 class="section-title">Dirección de envío</h3>
+    <div class="row g-3 mt-3">
+      <div class="col-md-6">
+        <input type="text" class="form-control dark-input" placeholder="Departamento">
+      </div>
+      <div class="col-md-6">
+        <input type="text" class="form-control dark-input" placeholder="Localidad">
+      </div>
+      <div class="col-md-6">
+        <input type="text" class="form-control dark-input" placeholder="Calle">
+      </div>
+      <div class="col-md-3">
+        <input type="text" class="form-control dark-input" placeholder="Número">
+      </div>
+      <div class="col-md-3">
+        <input type="text" class="form-control dark-input" placeholder="Esquina">
+      </div>
+    </div>
+  </section>
+
+  <!-- Forma de pago -->
+<section class="payment-section p-4 rounded-4 mb-4">
+  <h3 class="section-title">Forma de pago</h3>
+  <div class="payment-options d-flex flex-wrap gap-3 mt-3">
+    <label class="option-card">
+      <input type="radio" name="pago" value="credito">
+      <span>Tarjeta de crédito</span>
+    </label>
+    <label class="option-card">
+      <input type="radio" name="pago" value="debito">
+      <span>Tarjeta de débito</span>
+    </label>
+    <label class="option-card">
+      <input type="radio" name="pago" value="transferencia">
+      <span>Transferencia bancaria</span>
+    </label>
+    <label class="option-card">
+      <input type="radio" name="pago" value="redes">
+      <span>Redes de cobranza</span>
+    </label>
+  </div>
+</section>
+
+  <!-- Costos -->
+  <section class="costs-section p-4 rounded-4 mb-4 text-end">
+    <h3 class="section-title text-start">Costos</h3>
+    <p id="subtotalDisplay" class="mt-2">Subtotal: USD 0</p>
+    <p id="envioDisplay">Costo de envío: USD 0</p>
+    <h4 id="totalDisplay">Total: USD 0</h4>
+  </section>
+
+  <!-- Botón Finalizar compra -->
+  <div class="text-end mb-5">
+    <button class="btn btn-finalizar px-4 py-2">Finalizar compra</button>
+  </div>
+</div>
+
   <!-- Footer -->
   <footer class="text-muted mt-5">
     <div class="container">
