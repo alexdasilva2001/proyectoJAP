@@ -177,3 +177,161 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCart();
   actualizarBadgeCarrito();
 });
+
+function limpiarInvalido(input) {
+  if (!input) return;
+  input.classList.remove('is-invalid');
+  var fb = input.parentElement ? input.parentElement.querySelector('.invalid-feedback') : null;
+  if (fb) fb.textContent = '';
+}
+
+function desplazarAlPrimerError() {
+  var primero = document.querySelector('.is-invalid');
+  if (primero) primero.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function validarDireccion() {
+  var calle   = document.getElementById('calle');
+  var numero  = document.getElementById('numero');
+  var esquina = document.getElementById('esquina');
+  var ok = true;
+
+  limpiarInvalido(calle);
+  limpiarInvalido(numero);
+  limpiarInvalido(esquina);
+
+  if (!calle || !calle.value.trim())   ok = marcarInvalido(calle, 'Ingresá la calle.');
+  if (!numero || !numero.value.trim()) ok = marcarInvalido(numero, 'Ingresá el número.');
+  if (!esquina || !esquina.value.trim()) ok = marcarInvalido(esquina, 'Ingresá la esquina.');
+
+  return !!ok;
+}
+
+function validarEnvio() {
+  var radiosEnvio = document.querySelectorAll('input[name="envio"]');
+  var algunoMarcado = false;
+  for (var i = 0; i < radiosEnvio.length; i++) {
+    if (radiosEnvio[i].checked) {
+      algunoMarcado = true;
+      break;
+    }
+  }
+  var contenedor = document.getElementById('grupo-envio');
+  if (contenedor) {
+    contenedor.classList.remove('is-invalid');
+    var fb = contenedor.querySelector('.invalid-feedback');
+    if (fb) fb.textContent = '';
+    if (!algunoMarcado) {
+      contenedor.classList.add('is-invalid');
+      if (!fb) {
+        fb = document.createElement('div');
+        fb.className = 'invalid-feedback';
+        contenedor.appendChild(fb);
+      }
+      fb.textContent = 'Seleccioná una forma de envío.';
+    }
+  }
+  return algunoMarcado;
+}
+
+function validarCantidades() {
+  var cantidades = document.querySelectorAll('input.item-qty[type="number"], input[name="cantidad"][type="number"]');
+  var ok = true;
+  for (var i = 0; i < cantidades.length; i++) {
+    var inp = cantidades[i];
+    limpiarInvalido(inp);
+    var valor = Number(inp.value);
+    if (!isFinite(valor) || valor <= 0) {
+      ok = marcarInvalido(inp, 'La cantidad debe ser mayor a 0.');
+    }
+  }
+  return ok;
+}
+
+function validarPago() {
+  var radiosPago = document.querySelectorAll('input[name="pago"]');
+  var metodo = null;
+  for (var i = 0; i < radiosPago.length; i++) {
+    if (radiosPago[i].checked) {
+      metodo = radiosPago[i].value;
+      break;
+    }
+  }
+  var contenedor = document.getElementById('grupo-pago');
+  if (contenedor) {
+    contenedor.classList.remove('is-invalid');
+    var fb = contenedor.querySelector('.invalid-feedback');
+    if (fb) fb.textContent = '';
+    if (!metodo) {
+      contenedor.classList.add('is-invalid');
+      if (!fb) {
+        fb = document.createElement('div');
+        fb.className = 'invalid-feedback';
+        contenedor.appendChild(fb);
+      }
+      fb.textContent = 'Seleccioná una forma de pago.';
+      return false;
+    }
+  } else if (!metodo) {
+    return false;
+  }
+
+  var tarjetaNumero      = document.getElementById('tarjetaNumero');
+  var tarjetaNombre      = document.getElementById('tarjetaNombre');
+  var tarjetaVencimiento = document.getElementById('tarjetaVencimiento');
+  var tarjetaCvv         = document.getElementById('tarjetaCvv');
+  var transferenciaCuenta= document.getElementById('transferenciaCuenta');
+
+  limpiarInvalido(tarjetaNumero);
+  limpiarInvalido(tarjetaNombre);
+  limpiarInvalido(tarjetaVencimiento);
+  limpiarInvalido(tarjetaCvv);
+  limpiarInvalido(transferenciaCuenta);
+
+  if (metodo === 'tarjeta') {
+    var ok = true;
+    if (!tarjetaNumero || !tarjetaNumero.value.trim()) ok = marcarInvalido(tarjetaNumero, 'Ingresá el número de tarjeta.');
+    if (!tarjetaNombre || !tarjetaNombre.value.trim()) ok = marcarInvalido(tarjetaNombre, 'Ingresá el titular.');
+    if (!tarjetaVencimiento || !tarjetaVencimiento.value.trim()) ok = marcarInvalido(tarjetaVencimiento, 'Ingresá el vencimiento (MM/AA).');
+    if (!tarjetaCvv || !tarjetaCvv.value.trim()) ok = marcarInvalido(tarjetaCvv, 'Ingresá el CVV.');
+    return ok;
+  }
+
+  if (metodo === 'transferencia') {
+    if (!transferenciaCuenta || !transferenciaCuenta.value.trim()) {
+      return marcarInvalido(transferenciaCuenta, 'Ingresá el número de cuenta.');
+    }
+  }
+  return true;
+}
+
+function mostrarExito(mensaje) {
+  alert('¡Compra exitosa! ' + mensaje);
+}
+
+// Botón “Finalizar compra”
+function finalizarCompra(evento) {
+  if (evento && evento.preventDefault) evento.preventDefault();
+
+  var okDireccion = validarDireccion();
+  var okEnvio     = validarEnvio();
+  var okCant      = validarCantidades();
+  var okPago      = validarPago();
+
+  if (okDireccion && okEnvio && okCant && okPago) {
+    mostrarExito('Tu pedido fue procesado correctamente.');
+  } else {
+    desplazarAlPrimerError();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  var boton = document.getElementById('finalizarCompraBtn');
+  if (boton) {
+    boton.addEventListener('click', finalizarCompra);
+  }
+  var formulario = document.getElementById('checkoutForm');
+  if (formulario) {
+    formulario.addEventListener('submit', finalizarCompra);
+  }
+});
