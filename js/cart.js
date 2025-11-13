@@ -5,9 +5,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const totalElement = document.getElementById("total");
   const currencySelect = document.getElementById("currency-select");
 
+  // --- Elementos de la sección de costos ---
+  const envioInputs = document.querySelectorAll('input[name="envio"]');
+  const subtotalDisplay = document.getElementById("subtotalDisplay");
+  const envioDisplay = document.getElementById("envioDisplay");
+  const totalDisplay = document.getElementById("totalDisplay");
+
   // Tasas de conversión (ajustá según necesites)
   const conversionRates = { USD: 1, UYU: 40 }; // 1 USD = 40 UYU
   let currentCurrency = localStorage.getItem("selectedCurrency") || "USD";
+
+  // Porcentaje de envío seleccionado
+  let porcentajeEnvio = 0;
 
   // Establecer moneda actual en el selector
   if (currencySelect) currencySelect.value = currentCurrency;
@@ -20,6 +29,9 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>`;
     subtotalElement.textContent = "Subtotal: USD 0";
     totalElement.textContent = "Total: USD 0";
+    subtotalDisplay.textContent = "Subtotal: USD 0";
+    envioDisplay.textContent = "Costo de envío: USD 0";
+    totalDisplay.textContent = "Total: USD 0";
     return;
   }
 
@@ -65,7 +77,27 @@ document.addEventListener("DOMContentLoaded", () => {
     subtotalElement.textContent = `Subtotal: ${currentCurrency} ${subtotal.toFixed(2)}`;
     totalElement.textContent = `Total: ${currentCurrency} ${subtotal.toFixed(2)}`;
 
+    // Actualiza también la sección de costos
+    actualizarCostos();
+
     addEventListeners();
+  }
+
+  // --- Función para actualizar los costos (subtotal + envío + total) ---
+  function actualizarCostos() {
+    let subtotal = 0;
+
+    cart.forEach(producto => {
+      const priceConverted = convertCurrency(producto.unitCost, producto.currency, currentCurrency);
+      subtotal += priceConverted * producto.count;
+    });
+
+    const costoEnvio = (subtotal * porcentajeEnvio) / 100;
+    const total = subtotal + costoEnvio;
+
+    subtotalDisplay.textContent = `Subtotal: ${currentCurrency} ${subtotal.toFixed(2)}`;
+    envioDisplay.textContent = `Costo de envío (${porcentajeEnvio}%): ${currentCurrency} ${costoEnvio.toFixed(2)}`;
+    totalDisplay.textContent = `Total: ${currentCurrency} ${total.toFixed(2)}`;
   }
 
   // --- Eventos ---
@@ -94,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // --- Actualizar totales ---
+  // --- Actualizar totales (cuando cambian cantidades) ---
   function actualizarTotales() {
     let nuevoSubtotal = 0;
 
@@ -109,7 +141,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     subtotalElement.textContent = `Subtotal: ${currentCurrency} ${nuevoSubtotal.toFixed(2)}`;
     totalElement.textContent = `Total: ${currentCurrency} ${nuevoSubtotal.toFixed(2)}`;
+
+    // Recalcular sección de costos con el nuevo subtotal
+    actualizarCostos();
   }
+
+  // --- Cambio de tipo de envío ---
+  envioInputs.forEach(input => {
+    input.addEventListener("change", e => {
+      porcentajeEnvio = parseFloat(e.target.dataset.percent);
+      actualizarCostos();
+    });
+  });
 
   // --- Cambio de moneda ---
   if (currencySelect) {
@@ -130,6 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Inicialización
   renderCart();
   actualizarBadgeCarrito();
 });
