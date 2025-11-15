@@ -348,9 +348,26 @@ document.addEventListener("DOMContentLoaded", function () {
     return true;
   }
 
-  function mostrarExito(mensaje) {
-    alert("¡Compra exitosa! " + mensaje);
-  }
+function mostrarExito(mensaje) {
+  Swal.fire({
+    title: "¡Compra exitosa!",
+    text: mensaje,
+    icon: "success",
+    iconColor: "#6affd6", 
+    background: "#2a0055",
+    color: "#ffffff",
+    confirmButtonText: "Aceptar",
+    confirmButtonColor: "#8a2be2",
+    customClass: {
+      popup: "swal-popup-purple",
+      title: "swal-title-purple",
+      htmlContainer: "swal-text-purple",
+      confirmButton: "swal-button-purple"
+    }
+  });
+}
+
+
 
   function finalizarCompra(evento) {
     if (evento && evento.preventDefault) evento.preventDefault();
