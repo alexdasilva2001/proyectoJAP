@@ -1,18 +1,18 @@
+/* ===== Fondo general y tipografía ===== */
 body {
   background-color: #1a0033; /* Fondo oscuro púrpura */
   font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  /* OJO: sin flex ni height:100vh para no romper el layout de Bootstrap */
 }
 
+/* Contenedor genérico por si querés centrar algo específico */
 .tabla-container {
   background-color: #3a0066;
   padding: 10px;
   border-radius: 10px;
 }
 
+/* ===== Tablas (si todavía las usás en alguna parte) ===== */
 table {
   border-collapse: collapse;
   width: 100%;
@@ -20,7 +20,8 @@ table {
   overflow: hidden;
 }
 
-th, td {
+th,
+td {
   border: 1px solid #ffffff;
   color: #ffffff;
   text-align: center;
@@ -36,6 +37,7 @@ td {
   background-color: #3a0066;
 }
 
+/* Inputs numéricos */
 input[type="number"] {
   width: 60px;
   text-align: center;
@@ -46,6 +48,7 @@ input[type="number"] {
   color: #000;
 }
 
+/* Select de moneda en tablas antiguas */
 select.moneda {
   background-color: #d3d3d3;
   border: none;
@@ -56,7 +59,7 @@ select.moneda {
 }
 
 table input[type="number"] {
-  width: 1px;          /* ancho del input */
+  width: 60px;          /* ancho del input */
   text-align: center;   /* centra el número */
   padding: 5px;         /* espacio interno */
   border: 1px solid #ccc;
@@ -74,6 +77,56 @@ table select.moneda {
   color: #ffffff;
   font-size: 20px;
   margin-top: 20px;
+}
+
+/* ===== Bloques del checkout moderno ===== */
+.cart-extra-sections {
+  margin-bottom: 3rem;
+}
+
+.shipping-section,
+.address-section,
+.payment-section,
+.costs-section {
+  background-color: #3a0066;
+  color: #ffffff;
+  border-radius: 10px;
+}
+
+.section-title {
+  margin-bottom: 0.5rem;
+}
+
+/* Tarjetas de opciones (envío / pago) */
+.option-card {
+  background-color: #4b0082;
+  border-radius: 10px;
+  padding: 10px 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.option-card input[type="radio"] {
+  accent-color: #ffffff;
+}
+
+.option-card span {
+  color: #ffffff;
+  margin: 0;
+}
+
+/* Inputs de la sección de dirección */
+.dark-input {
+  background-color: #d3d3d3;
+  color: #000;
+}
+
+/* Ítems del carrito renderizados con JS */
+.cart-item {
+  background-color: #3a0066;
+  color: #ffffff;
 }
 
 /* ======= Validaciones checkout ======= */
