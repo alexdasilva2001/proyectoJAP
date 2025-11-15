@@ -11,8 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const envioDisplay = document.getElementById("envioDisplay");
   const totalDisplay = document.getElementById("totalDisplay");
 
-  // Tasas de conversión (ajustá según necesites)
-  const conversionRates = { USD: 1, UYU: 40 }; // 1 USD = 40 UYU
+  // Tasas de conversión
+  const conversionRates = { USD: 1, UYU: 40 }; // 1 USD = 40 UYU (ajustar si querés)
   let currentCurrency = localStorage.getItem("selectedCurrency") || "USD";
 
   // Porcentaje de envío seleccionado
@@ -27,18 +27,18 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="alert alert-info mt-3" role="alert">
         Tu carrito está vacío 🛒
       </div>`;
-    subtotalElement.textContent = "Subtotal: USD 0";
-    totalElement.textContent = "Total: USD 0";
-    subtotalDisplay.textContent = "Subtotal: USD 0";
-    envioDisplay.textContent = "Costo de envío: USD 0";
-    totalDisplay.textContent = "Total: USD 0";
+    if (subtotalElement) subtotalElement.textContent = "Subtotal: USD 0";
+    if (totalElement) totalElement.textContent = "Total: USD 0";
+    if (subtotalDisplay) subtotalDisplay.textContent = "Subtotal: USD 0";
+    if (envioDisplay) envioDisplay.textContent = "Costo de envío: USD 0";
+    if (totalDisplay) totalDisplay.textContent = "Total: USD 0";
+    actualizarBadgeCarrito();
     return;
   }
 
   // --- Función de conversión ---
   function convertCurrency(amount, from, to) {
     if (from === to) return amount;
-    // Convertir primero a USD, luego a la moneda destino
     return (amount / conversionRates[from]) * conversionRates[to];
   }
 
@@ -53,7 +53,16 @@ document.addEventListener("DOMContentLoaded", () => {
       subtotal += itemSubtotal;
 
       const item = document.createElement("div");
-      item.classList.add("cart-item", "border", "rounded", "p-3", "mb-3", "d-flex", "justify-content-between", "align-items-center");
+      item.classList.add(
+        "cart-item",
+        "border",
+        "rounded",
+        "p-3",
+        "mb-3",
+        "d-flex",
+        "justify-content-between",
+        "align-items-center"
+      );
 
       item.innerHTML = `
         <div class="d-flex align-items-center">
@@ -67,15 +76,21 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         </div>
         <div class="text-end">
-          <input type="number" min="1" value="${producto.count}" class="form-control cantidad-input mb-2" data-index="${index}" style="width: 80px;">
+          <input type="number" min="1" value="${producto.count}"
+                 class="form-control cantidad-input mb-2"
+                 data-index="${index}" style="width: 80px;">
           <p class="mb-0 fw-bold item-subtotal">${currentCurrency} ${itemSubtotal.toFixed(2)}</p>
         </div>
       `;
       cartContainer.appendChild(item);
     });
 
-    subtotalElement.textContent = `Subtotal: ${currentCurrency} ${subtotal.toFixed(2)}`;
-    totalElement.textContent = `Total: ${currentCurrency} ${subtotal.toFixed(2)}`;
+    if (subtotalElement) {
+      subtotalElement.textContent = `Subtotal: ${currentCurrency} ${subtotal.toFixed(2)}`;
+    }
+    if (totalElement) {
+      totalElement.textContent = `Total: ${currentCurrency} ${subtotal.toFixed(2)}`;
+    }
 
     // Actualiza también la sección de costos
     actualizarCostos();
@@ -95,12 +110,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const costoEnvio = (subtotal * porcentajeEnvio) / 100;
     const total = subtotal + costoEnvio;
 
-    subtotalDisplay.textContent = `Subtotal: ${currentCurrency} ${subtotal.toFixed(2)}`;
-    envioDisplay.textContent = `Costo de envío (${porcentajeEnvio}%): ${currentCurrency} ${costoEnvio.toFixed(2)}`;
-    totalDisplay.textContent = `Total: ${currentCurrency} ${total.toFixed(2)}`;
+    if (subtotalDisplay) {
+      subtotalDisplay.textContent = `Subtotal: ${currentCurrency} ${subtotal.toFixed(2)}`;
+    }
+    if (envioDisplay) {
+      envioDisplay.textContent = `Costo de envío (${porcentajeEnvio}%): ${currentCurrency} ${costoEnvio.toFixed(2)}`;
+    }
+    if (totalDisplay) {
+      totalDisplay.textContent = `Total: ${currentCurrency} ${total.toFixed(2)}`;
+    }
   }
 
-  // --- Eventos ---
+  // --- Eventos del carrito ---
   function addEventListeners() {
     // Cambiar cantidad
     document.querySelectorAll(".cantidad-input").forEach(input => {
@@ -118,7 +139,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Eliminar producto
     document.querySelectorAll(".eliminar-btn").forEach(btn => {
       btn.addEventListener("click", e => {
-        const index = e.target.closest("button").dataset.index;
+        const button = e.target.closest("button");
+        const index = button.dataset.index;
         cart.splice(index, 1);
         localStorage.setItem("cart", JSON.stringify(cart));
         location.reload();
@@ -135,12 +157,19 @@ document.addEventListener("DOMContentLoaded", () => {
       const priceConverted = convertCurrency(producto.unitCost, producto.currency, currentCurrency);
       const itemSubtotal = producto.count * priceConverted;
 
-      item.querySelector(".item-subtotal").textContent = `${currentCurrency} ${itemSubtotal.toFixed(2)}`;
+      const subEl = item.querySelector(".item-subtotal");
+      if (subEl) {
+        subEl.textContent = `${currentCurrency} ${itemSubtotal.toFixed(2)}`;
+      }
       nuevoSubtotal += itemSubtotal;
     });
 
-    subtotalElement.textContent = `Subtotal: ${currentCurrency} ${nuevoSubtotal.toFixed(2)}`;
-    totalElement.textContent = `Total: ${currentCurrency} ${nuevoSubtotal.toFixed(2)}`;
+    if (subtotalElement) {
+      subtotalElement.textContent = `Subtotal: ${currentCurrency} ${nuevoSubtotal.toFixed(2)}`;
+    }
+    if (totalElement) {
+      totalElement.textContent = `Total: ${currentCurrency} ${nuevoSubtotal.toFixed(2)}`;
+    }
 
     // Recalcular sección de costos con el nuevo subtotal
     actualizarCostos();
@@ -178,6 +207,24 @@ document.addEventListener("DOMContentLoaded", () => {
   actualizarBadgeCarrito();
 });
 
+/* ================== VALIDACIONES CHECKOUT ================== */
+
+function marcarInvalido(input, mensaje) {
+  if (!input) return false;
+  input.classList.add('is-invalid');
+
+  var fb = input.parentElement ? input.parentElement.querySelector('.invalid-feedback') : null;
+  if (!fb) {
+    fb = document.createElement('div');
+    fb.className = 'invalid-feedback';
+    if (input.parentElement) {
+      input.parentElement.appendChild(fb);
+    }
+  }
+  if (fb) fb.textContent = mensaje;
+  return false;
+}
+
 function limpiarInvalido(input) {
   if (!input) return;
   input.classList.remove('is-invalid');
@@ -194,14 +241,15 @@ function validarDireccion() {
   var calle   = document.getElementById('calle');
   var numero  = document.getElementById('numero');
   var esquina = document.getElementById('esquina');
+
   var ok = true;
 
   limpiarInvalido(calle);
   limpiarInvalido(numero);
   limpiarInvalido(esquina);
 
-  if (!calle || !calle.value.trim())   ok = marcarInvalido(calle, 'Ingresá la calle.');
-  if (!numero || !numero.value.trim()) ok = marcarInvalido(numero, 'Ingresá el número.');
+  if (!calle || !calle.value.trim())     ok = marcarInvalido(calle,   'Ingresá la calle.');
+  if (!numero || !numero.value.trim())   ok = marcarInvalido(numero,  'Ingresá el número.');
   if (!esquina || !esquina.value.trim()) ok = marcarInvalido(esquina, 'Ingresá la esquina.');
 
   return !!ok;
@@ -235,7 +283,7 @@ function validarEnvio() {
 }
 
 function validarCantidades() {
-  var cantidades = document.querySelectorAll('input.item-qty[type="number"], input[name="cantidad"][type="number"]');
+  var cantidades = document.querySelectorAll('input.cantidad-input[type="number"]');
   var ok = true;
   for (var i = 0; i < cantidades.length; i++) {
     var inp = cantidades[i];
@@ -257,6 +305,7 @@ function validarPago() {
       break;
     }
   }
+
   var contenedor = document.getElementById('grupo-pago');
   if (contenedor) {
     contenedor.classList.remove('is-invalid');
@@ -276,32 +325,7 @@ function validarPago() {
     return false;
   }
 
-  var tarjetaNumero      = document.getElementById('tarjetaNumero');
-  var tarjetaNombre      = document.getElementById('tarjetaNombre');
-  var tarjetaVencimiento = document.getElementById('tarjetaVencimiento');
-  var tarjetaCvv         = document.getElementById('tarjetaCvv');
-  var transferenciaCuenta= document.getElementById('transferenciaCuenta');
-
-  limpiarInvalido(tarjetaNumero);
-  limpiarInvalido(tarjetaNombre);
-  limpiarInvalido(tarjetaVencimiento);
-  limpiarInvalido(tarjetaCvv);
-  limpiarInvalido(transferenciaCuenta);
-
-  if (metodo === 'tarjeta') {
-    var ok = true;
-    if (!tarjetaNumero || !tarjetaNumero.value.trim()) ok = marcarInvalido(tarjetaNumero, 'Ingresá el número de tarjeta.');
-    if (!tarjetaNombre || !tarjetaNombre.value.trim()) ok = marcarInvalido(tarjetaNombre, 'Ingresá el titular.');
-    if (!tarjetaVencimiento || !tarjetaVencimiento.value.trim()) ok = marcarInvalido(tarjetaVencimiento, 'Ingresá el vencimiento (MM/AA).');
-    if (!tarjetaCvv || !tarjetaCvv.value.trim()) ok = marcarInvalido(tarjetaCvv, 'Ingresá el CVV.');
-    return ok;
-  }
-
-  if (metodo === 'transferencia') {
-    if (!transferenciaCuenta || !transferenciaCuenta.value.trim()) {
-      return marcarInvalido(transferenciaCuenta, 'Ingresá el número de cuenta.');
-    }
-  }
+  // Si por ahora solo querés validar que haya elegido algo:
   return true;
 }
 
