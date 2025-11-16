@@ -1,4 +1,4 @@
-let darkMode = localStorage.getItem('darkMode') === 'true' || false;
+let darkMode = localStorage.getItem('darkMode') === 'true';
 
 // Crear botón toggle flotante
 const toggleBtn = document.createElement("button");

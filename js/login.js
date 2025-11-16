@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (hayErrores) return;
 
     // Guardar datos
-    localStorage.setItem("username", usuario);
+    localStorage.setItem("usuario", usuario);
     localStorage.setItem("correo", correo);
     localStorage.setItem("logueado", "true");
     if (!localStorage.getItem("miAvatar")) localStorage.setItem("miAvatar", "img/Generic avatar.png");

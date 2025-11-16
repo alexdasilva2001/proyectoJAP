@@ -20,15 +20,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (!catID) {
     productList.innerHTML = `<p>No se encontró una categoría seleccionada.</p>`;
+    if (navbarTitle) navbarTitle.textContent = "Categoría desconocida";
     return;
   }
 
   const URL = `https://japceibal.github.io/emercado-api/cats_products/${catID}.json`;
-
-  if (!catID) {
-    if (navbarTitle) navbarTitle.textContent = "Categoría desconocida";
-    return;
-  }
 
   //  Obtener lista de categorías para buscar el nombre
   fetch("https://japceibal.github.io/emercado-api/cats/cat.json")

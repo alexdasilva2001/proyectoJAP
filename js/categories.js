@@ -27,8 +27,8 @@ function showCategoriesList() {
     let htmlContentToAppend = "";
     for (let i = 0; i < currentCategoriesArray.length; i++) {
         let category = currentCategoriesArray[i];
-        if (((minCount == undefined) || (parseInt(category.productCount) >= minCount)) &&
-            ((maxCount == undefined) || (parseInt(category.productCount) <= maxCount))) {
+        if (((minCount === undefined) || (parseInt(category.productCount) >= minCount)) &&
+            ((maxCount === undefined) || (parseInt(category.productCount) <= maxCount))) {
             htmlContentToAppend += `
             <div onclick="setCatID(${category.id})" class="list-group-item list-group-item-action cursor-active">
                 <div class="row">
@@ -52,7 +52,7 @@ function showCategoriesList() {
 
 function sortAndShowCategories(sortCriteria, categoriesArray) {
     currentSortCriteria = sortCriteria;
-    if (categoriesArray != undefined) currentCategoriesArray = categoriesArray;
+    if (categoriesArray !== undefined) currentCategoriesArray = categoriesArray;
     currentCategoriesArray = sortCategories(currentSortCriteria, currentCategoriesArray);
     showCategoriesList();
 }

@@ -25,31 +25,6 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("product-sold-count").textContent =
         data.soldCount != null ? `${data.soldCount} vendidos` : "";
 
-      // Botón "Comprar"
-      const btn = document.querySelector(".btn-buy");
-      if (btn) {
-        btn.addEventListener("click", function () {
-          const item = {
-            id: data.id,
-            name: data.name,
-            currency: data.currency,
-            unitCost: data.cost,
-            image: data.images?.[0] || "",
-            count: 1,
-          };
-
-          const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-          const existing = cart.find((p) => p.id === item.id);
-
-          if (existing) existing.count++;
-          else cart.push(item);
-
-          localStorage.setItem("cart", JSON.stringify(cart));
-          actualizarBadgeCarrito();
-          window.location = "cart.html";
-        });
-      }
-
       // Cargar productos relacionados
       fetch("https://japceibal.github.io/emercado-api/cats/cat.json")
         .then((res) => res.json())
@@ -279,36 +254,26 @@ document.addEventListener("DOMContentLoaded", actualizarBadgeCarrito);
 
 // ASOCIAR CLICK AL ÍCONO / BOTÓN "AGREGAR AL CARRITO"
 document.addEventListener("DOMContentLoaded", () => {
+  const handleAddToCart = (redirectToCart = false) => {
+    const productID = localStorage.getItem("productID");
+    if (!productID) return;
+
+    fetch(`https://japceibal.github.io/emercado-api/products/${productID}.json`)
+      .then(response => response.json())
+      .then(product => {
+        agregarAlCarrito(product);
+        if (redirectToCart) window.location = "cart.html";
+      })
+      .catch(err => console.error("Error al agregar al carrito:", err));
+  };
+
   const addBtnIcon = document.getElementById("add-to-cart-btn");
   if (addBtnIcon) {
-    addBtnIcon.addEventListener("click", () => {
-      const productID = localStorage.getItem("productID");
-      if (!productID) return;
-
-      fetch(`https://japceibal.github.io/emercado-api/products/${productID}.json`)
-        .then(response => response.json())
-        .then(product => {
-          agregarAlCarrito(product);
-        })
-        .catch(err => console.error("Error al agregar al carrito:", err));
-    });
+    addBtnIcon.addEventListener("click", () => handleAddToCart(false));
   }
 
-  // También asociamos al botón "Comprar" si existe
   const buyBtn = document.querySelector(".btn-buy");
   if (buyBtn) {
-    buyBtn.addEventListener("click", () => {
-      const productID = localStorage.getItem("productID");
-      if (!productID) return;
-
-      fetch(`https://japceibal.github.io/emercado-api/products/${productID}.json`)
-        .then(response => response.json())
-        .then(product => {
-          agregarAlCarrito(product);
-          // Redirigir al carrito
-          window.location = "cart.html";
-        })
-        .catch(err => console.error("Error en Comprar:", err));
-    });
+    buyBtn.addEventListener("click", () => handleAddToCart(true));
   }
 });
