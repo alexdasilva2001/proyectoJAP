@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const authMiddleware = require('./middleware/authMiddleware');
 
 const app = express();
 app.use(express.json());
@@ -32,6 +33,8 @@ for (const u of users) {
   }
 }
 
+// ================= PUNTO 3: LOGIN (ya hecho) =================
+
 // POST /login
 app.post('/login', async (req, res) => {
   try {
@@ -57,8 +60,40 @@ app.post('/login', async (req, res) => {
   }
 });
 
+// ================= PUNTO 4: MIDDLEWARE DE AUTORIZACIÓN =================
+// El middleware está importado desde middleware/authMiddleware.js
+
+// ================= RUTAS =================
+
 // Ruta de prueba pública
 app.get('/', (req, res) => res.send('Backend de auth corriendo'));
+
+// EJEMPLO de ruta protegida (para que veas cómo se usa el middleware)
+// TODO: reemplazar por las rutas reales que devuelven los JSON del eCommerce
+app.get('/api/protegida', authMiddleware, (req, res) => {
+  res.json({
+    message: 'Accediste a una ruta protegida',
+    user: req.user
+  });
+});
+
+/*
+  Acá es donde, en tu proyecto real, deberías proteger las rutas
+  que devuelven los JSON del eCommerce. Por ejemplo, si tenés:
+
+  app.get('/categories', (req, res) => { ... });
+  app.get('/products', (req, res) => { ... });
+
+  Deberían quedar así:
+
+  app.get('/categories', authMiddleware, (req, res) => { ... });
+  app.get('/products', authMiddleware, (req, res) => { ... });
+
+  O bien, si usás un router:
+
+  const ecommerceRouter = require('./routes/ecommerce');
+  app.use('/api', authMiddleware, ecommerceRouter);
+*/
 
 app.listen(PORT, () => {
   console.log(`Server escuchando en http://localhost:${PORT}`);
